@@ -9,7 +9,7 @@
  *  in the AcceptHeader class, so that conversions can be made
  */
 
-class ReturnType {
+class ResponseType {
     const ATTACHMENT    = "ATTACHMENT";
     const JSON          = "JSON";
     const XML           = "XML";
