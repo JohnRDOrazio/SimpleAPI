@@ -68,7 +68,7 @@ class SimpleAPI {
         die( $errorMessage );
     }
 
-    public function validateAcceptHeader( bool $beLaxAboutIt ) {
+    public function validateAcceptHeader( bool $beLaxAboutIt = true ) {
 
         if( $this->hasAcceptHeader() ) {
             if( $this->isAllowedAcceptHeader() ) {
