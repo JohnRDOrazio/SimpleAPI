@@ -12,7 +12,7 @@
 
 //TODO: see if it's possible to move the cache definitions to the SimpleAPI class
 
-include_once( 'includes/APICore.php' );
+include_once( 'includes/SimpleAPI.php' );
 include_once( 'includes/enums/CacheDuration.php' );
 include_once( "includes/APIParams.php" );
 
