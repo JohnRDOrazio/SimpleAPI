@@ -28,6 +28,13 @@ with the SampleAPI class. You should adapt the SampleAPI class so as to create y
 The SampleAPI class is not an API endpoint: API endpoints should implement the SampleAPI middleware,
 and each endpoint should set the SimpleAPI to behave according to its own needs through the SampleAPI middleware.
 
+## Why the SimpleAPI ?
+Many API implementations nowadays are handled with Ruby on Rails, or with complex frameworks such as Laravel that have a lot of functionality.
+
+However sometimes you may need to create a simple API service without a lot of overhead, and without needing to learn a whole framework.
+
+The SimpleAPI aims to jumpstart your simple API implementation, removing the initial overhead of defining the basics of handling request headers and response headers.
+
 ## Minimum PHP version
 The SimpleAPI requires a minimum PHP version of 7.4, seeing that it makes use of typed properties
 in order to have consistency throughout the codebase.
