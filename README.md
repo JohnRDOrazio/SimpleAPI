@@ -33,6 +33,8 @@ Many API implementations nowadays are handled with Ruby on Rails, or with comple
 
 However sometimes you may need to create a simple API service without a lot of overhead, and without needing to learn a whole framework.
 
+And perhaps you know PHP and would like to stick to a simple PHP implementation.
+
 The SimpleAPI aims to jumpstart your simple API implementation, removing the initial overhead of defining the basics of handling request headers and response headers.
 
 ## Minimum PHP version
