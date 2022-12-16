@@ -13,6 +13,10 @@ The SimpleAPI does not create or handle routes (for now at least). This should b
 The SimpleAPI does not handle internationalization or localization of your response:
 this should be handled by your own API implementation, using the included SampleAPI middleware.
 
+The SimpleAPI does not create any kind of client implementation of the API.
+It simply help you jumpstart your API, to handle requests from clients and produce responses.
+Client implementations must be created separately.
+
 ## What the SimpleAPI IS
 The SimpleAPI simply handles detection of Request methods and Accept headers, 
 and takes care of preparing the Response accordingly, with the correct Response headers and Content type.
