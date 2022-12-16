@@ -14,7 +14,7 @@ The SimpleAPI does not handle internationalization or localization of your respo
 this should be handled by your own API implementation, using the included SampleAPI middleware.
 
 The SimpleAPI does not create any kind of client implementation of the API.
-It simply help you jumpstart your API, to handle requests from clients and produce responses.
+It simply helps you jumpstart your API, to handle requests from clients and produce responses.
 Client implementations must be created separately.
 
 ## What the SimpleAPI IS
