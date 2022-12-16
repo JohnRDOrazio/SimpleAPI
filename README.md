@@ -11,7 +11,7 @@ It aims to be extensible so as to cater to various use cases, and to various kin
 The SimpleAPI does not create or handle routes (for now at least). This should be handled by your own API implementation.
 
 The SimpleAPI does not handle internationalization or localization of your response:
-this should be handled by your own API implementation.
+this should be handled by your own API implementation, using the included SampleAPI middleware.
 
 ## What the SimpleAPI IS
 The SimpleAPI simply handles detection of Request methods and Accept headers, 
@@ -21,6 +21,12 @@ It will assist you in defining the accepted parameters that the request can or s
 and in generating the correct response based on those parameters.
 It will generate response headers for both valid and invalid requests,
 so as to assist the requesting party in making the correct request to your API.
+
+The SimpleAPI offers a sample middleware, that can help define your own API implementation,
+with the SampleAPI class. You should adapt the SampleAPI class so as to create your own API.
+
+The SampleAPI class is not an API endpoint: API endpoints should implement the SampleAPI middleware,
+and each endpoint should set the SimpleAPI to behave according to its own needs through the SampleAPI middleware.
 
 ## Minimum PHP version
 The SimpleAPI requires a minimum PHP version of 7.4, seeing that it makes use of typed properties
