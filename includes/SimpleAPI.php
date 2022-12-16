@@ -1,11 +1,9 @@
 <?php
 
-$includePath = realpath( __DIR__ );
-
-include_once( "{$includePath}/enums/AcceptHeader.php" );
-include_once( "{$includePath}/enums/RequestMethod.php" );
-include_once( "{$includePath}/enums/RequestContentType.php" );
-include_once( "{$includePath}/enums/ResponseType.php" );
+include_once( "enums/AcceptHeader.php" );
+include_once( "enums/RequestMethod.php" );
+include_once( "enums/RequestContentType.php" );
+include_once( "enums/ResponseType.php" );
 
 class SimpleAPI {
 
