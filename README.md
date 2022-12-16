@@ -29,11 +29,11 @@ The SampleAPI class is not an API endpoint: API endpoints should implement the S
 and each endpoint should set the SimpleAPI to behave according to its own needs through the SampleAPI middleware.
 
 ## Why the SimpleAPI ?
-Many API implementations nowadays are handled with Ruby on Rails, or with complex frameworks such as Laravel that have a lot of functionality.
+Many API implementations nowadays are handled with Ruby on Rails, or [Python](https://www.python.org/) + [Flask](https://flask.palletsprojects.com/), or with complex frameworks such as [Laravel](https://laravel.com/) that have a lot of functionality.
 
-However sometimes you may need to create a simple API service without a lot of overhead, and without needing to learn a whole framework.
+However sometimes you may need to just create a simple API service without a lot of overhead, and without needing to learn a whole new language or the complexities of a framework.
 
-And perhaps you know PHP and would like to stick to a simple PHP implementation.
+And perhaps you are familiar with [PHP](https://www.php.net/) and would like to stick to a simple PHP implementation.
 
 The SimpleAPI aims to jumpstart your simple API implementation, removing the initial overhead of defining the basics of handling request headers and response headers.
 
