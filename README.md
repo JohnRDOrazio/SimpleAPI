@@ -37,6 +37,8 @@ And perhaps you are familiar with [PHP](https://www.php.net/) and would like to 
 
 The SimpleAPI aims to jumpstart your simple API implementation, removing the initial overhead of defining the basics of handling request headers and response headers.
 
+The SimpleAPI is compliant with the HTTP2 protocol.
+
 ## Minimum PHP version
 The SimpleAPI requires a minimum PHP version of [7.4](https://www.php.net/releases/7_4_0.php),
 seeing that it makes use of typed properties in order to have consistency throughout the codebase.
