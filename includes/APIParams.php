@@ -4,10 +4,10 @@ include_once( 'enums/ResponseType.php' );
 
 class APIParams {
     //define a public class property for each of your supported API parameters
-    //example:
-    //public ?string $Param1      = null;
-    //public int     $Param2;
-    //public ?string $ReponseType = null;
+    //and define here any default values that might be used/returned if the parameters are not set in the request
+    public ?string $Param1      = null;
+    public int     $Param2      = 0;
+    public ?string $ResponseType = null;
   
     const ALLOWED_PARAMS  = [
       //list your supported API parameters here exactly as they should be received by the API,
@@ -26,18 +26,35 @@ class APIParams {
             $key = strtoupper( $key );
             if( in_array( $key, self::ALLOWED_PARAMS ) ){
                 switch( $key ){
-                    case "PARAM1":
-                        $this->enforceParam1Validity( $value );
+                    case "PARAM_ONE":
+                        $this->Param1 = $this->enforceParam1Validity( $value );
                         break;
-                    case "PARAM2":
-                        $this->enforceParam1Validity( $value );
+                    case "PARAM_TWO":
+                        $this->Param2 = $this->enforceParam2Validity( $value );
                         break;
                     case "RESPONSETYPE":
-                        $this->ResponseType       = ResponseType::isValid( strtoupper( $value ) ) ? strtoupper( $value ) : ResponseType::JSON;
+                        $this->ResponseType = ResponseType::isValid( strtoupper( $value ) ) ? strtoupper( $value ) : ResponseType::JSON;
                         break;
                 }
             }
         }
 
+    }
+
+    private function enforceParam1Validity( string|null $value ) : string|null {
+        if( gettype($value) === 'string' ) {
+            return strip_tags( $value );
+        }
+        return null;
+    }
+
+    private function enforceParam2Validity( int|null $value ) : int {
+        if( gettype( $value ) === 'integer' ) {
+            if( $value > 10 ) {
+                $value = 10;
+            }
+            return $value;
+        }
+        return 0;
     }
 }
