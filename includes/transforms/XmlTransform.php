@@ -18,7 +18,10 @@ class XmlTransform {
         }
     }
 
-    public static function ObjectToXml( object $object, $XMLParentElement, $XMLNamespace ) : string|bool {
+    public static function ObjectToXml( object $object ) : string|bool {
+        //The following constants should have been defined in config.php
+        $XMLParentElement   = XML_PARENT_ELEMENT;
+        $XMLNamespace       = XML_NAMESPACE;
         //First we need to convert the object to an associative array
         $jsonStr = json_encode( $object );
         $jsonObj = json_decode( $jsonStr, true );

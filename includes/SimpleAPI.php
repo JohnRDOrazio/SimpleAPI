@@ -104,34 +104,6 @@ class SimpleAPI {
         }
     }
 
-    public function setAllowedOrigins( array $origins ) : void {
-        $this->AllowedOrigins = $origins;
-    }
-
-    public function setAllowedReferers( array $referers ) : void {
-        $this->AllowedReferers = $referers;
-    }
-
-    public function setAllowedAcceptHeaders( array $acceptHeaders ) : void {
-        $this->AllowedAcceptHeaders = array_values( array_intersect( AcceptHeader::$values, $acceptHeaders ) );
-    }
-
-    public function setAllowedRequestMethods( array $requestMethods ) : void {
-        $this->AllowedRequestMethods = array_values( array_intersect( RequestMethod::$values, $requestMethods ) );
-    }
-
-    public function setAllowedRequestContentTypes( array $requestContentTypes ) : void {
-        $this->AllowedRequestContentTypes = array_values( array_intersect( RequestContentType::$values, $requestContentTypes ) );
-    }
-
-    public function setAllowedResponseTypes( array $responseTypes ) : void {
-        $this->AllowedResponseTypes = array_values( array_intersect( ResponseType::$values, $responseTypes ) );
-    }
-
-    public function setResponseContentType( string $responseContentType ) : void {
-        $this->ResponseContentType = $responseContentType;
-    }
-
     public function setResponseContentTypeHeader() : void {
         header( 'Cache-Control: must-revalidate, max-age=259200' ); //cache for 1 month
         header( "Content-Type: {$this->ResponseContentType}; charset=utf-8" );

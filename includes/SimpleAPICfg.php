@@ -53,6 +53,11 @@ $cfgDflt["ALLOWED_REFERERS"] = [ "*" ];
 $cfgDflt["FORCE_AJAX_REQUEST"] = false;
 $cfgDflt["GITHUB_REPO_USER"] = "JohnRDOrazio";
 $cfgDflt["GITHUB_REPO_NAME"] = "SimpleAPI";
+$cfgDflt["XML_PARENT_ELEMENT"] = "SampleAPI";
+$cfgDflt["XML_NAMESPACE"] = "https://myapidomain.com/" . $cfgDflt["GITHUB_REPO_NAME"];
+$cfgDflt["CALENDAR_NAME"] = $cfgDflt["GITHUB_REPO_NAME"] . " Calendar";
+$cfgDflt["CALENDAR_DEFAULT_TIMEZONE"] = "Europe/Vatican";
+$cfgDflt["CALENDAR_DEFAULT_LANGUAGE"] = "en-us";
 
 foreach( $cfgDflt as $key => $value ) {
     if(!defined($key) ) {
