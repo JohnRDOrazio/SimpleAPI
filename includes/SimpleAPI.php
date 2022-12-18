@@ -1,9 +1,11 @@
 <?php
 
-include_once( "enums/AcceptHeader.php" );
-include_once( "enums/RequestMethod.php" );
-include_once( "enums/RequestContentType.php" );
-include_once( "enums/ResponseType.php" );
+require_once( "enums/AcceptHeader.php" );
+require_once( "enums/RequestMethod.php" );
+require_once( "enums/RequestContentType.php" );
+require_once( "enums/ResponseType.php" );
+require_once( "enums/CacheDuration.php" );
+require_once( "SimpleAPICfg.php" );
 
 class SimpleAPI {
 
@@ -12,17 +14,24 @@ class SimpleAPI {
     private array $AllowedAcceptHeaders;
     private array $AllowedRequestMethods;
     private array $AllowedRequestContentTypes;
+    private array $AllowedResponseTypes;
     private array $RequestHeaders;
-    private ?string $JsonEncodedRequestHeaders  = null;
-    private ?string $RequestContentType         = null;
-    private ?string $ResponseContentType        = null;
+    private string|false $JsonEncodedRequestHeaders = '';
+    private ?string $RequestContentType             = null;
+    private ?string $ResponseContentType            = null;
+    private string $DefaultResponseContentType      = '';
+    private ?string $CacheDuration                   = null;
+    private ?string $CacheFile                      = null;
+    private ?string $CacheFilePath                  = null;
 
     public function __construct(){
-        $this->AllowedOrigins                   = [ "*" ];
-        $this->AllowedReferers                  = [ "*" ];
-        $this->AllowedAcceptHeaders             = AcceptHeader::$values;
-        $this->AllowedRequestMethods            = RequestMethod::$values;
-        $this->AllowedRequestContentTypes       = RequestContentType::$values;
+        $this->AllowedOrigins                   = ALLOWED_ORIGINS;
+        $this->AllowedReferers                  = ALLOWED_REFERERS;
+        $this->AllowedAcceptHeaders             = ALLOWED_ACCEPT_HEADERS;
+        $this->AllowedRequestMethods            = ALLOWED_REQUEST_METHODS;
+        $this->AllowedRequestContentTypes       = ALLOWED_REQUEST_CONTENT_TYPES;
+        $this->AllowedResponseTypes             = ALLOWED_RESPONSE_TYPES;
+        $this->DefaultResponseContentType       = DEFAULT_MIME_TYPE;
         $this->RequestHeaders                   = getallheaders();
         $this->JsonEncodedRequestHeaders        = json_encode( $this->RequestHeaders );
         if( isset( $_SERVER[ 'CONTENT_TYPE' ] ) ) {
@@ -68,18 +77,21 @@ class SimpleAPI {
         die( $errorMessage );
     }
 
-    public function validateAcceptHeader( bool $beLaxAboutIt = true ) {
-
+    public function validateAcceptHeader() {
         if( $this->hasAcceptHeader() ) {
-            if( $this->isAllowedAcceptHeader() ) {
-                $this->ResponseContentType = explode( ',', $this->RequestHeaders[ "Accept" ] )[0];
-            } else {
-                if( $beLaxAboutIt ) {
+            $acceptHeaders = explode( ",", $this->RequestHeaders[ "Accept" ] );
+            foreach($acceptHeaders as $acceptHeader) {
+                if( $this->isAllowedAcceptHeader( $acceptHeader ) ) {
+                    $this->ResponseContentType = $acceptHeader;
+                    break;
+                }
+            }
+            if( null === $this->ResponseContentType ) {
+                if( RELAX_FOR_TEXT_TYPE_REQUESTS ) {
                     //Requests from browser windows using the address bar will probably have an Accept header of text/html
                     //In order to not be too drastic, let's treat text/html as though it were application/json for GET and POST requests only
-                    $acceptHeaders = explode( ",", $this->RequestHeaders[ "Accept" ] );
                     if( in_array( 'text/html', $acceptHeaders ) || in_array( 'text/plain', $acceptHeaders ) || in_array( '*/*', $acceptHeaders ) ) {
-                        $this->ResponseContentType = AcceptHeader::JSON;
+                        $this->ResponseContentType = $this->DefaultResponseContentType;
                     } else {
                         $this->sendHeaderNotAcceptable();
                     }
@@ -88,9 +100,8 @@ class SimpleAPI {
                 }
             }
         } else {
-            $this->ResponseContentType = $this->AllowedAcceptHeaders[ 0 ];
+            $this->ResponseContentType = $this->DefaultResponseContentType;
         }
-
     }
 
     public function setAllowedOrigins( array $origins ) : void {
@@ -113,6 +124,10 @@ class SimpleAPI {
         $this->AllowedRequestContentTypes = array_values( array_intersect( RequestContentType::$values, $requestContentTypes ) );
     }
 
+    public function setAllowedResponseTypes( array $responseTypes ) : void {
+        $this->AllowedResponseTypes = array_values( array_intersect( ResponseType::$values, $responseTypes ) );
+    }
+
     public function setResponseContentType( string $responseContentType ) : void {
         $this->ResponseContentType = $responseContentType;
     }
@@ -126,16 +141,52 @@ class SimpleAPI {
         return $this->AllowedAcceptHeaders;
     }
 
+    public function getAllowedResponseTypes() : array {
+        return $this->AllowedResponseTypes;
+    }
+
     public function getAllowedRequestContentTypes() : array {
         return $this->AllowedRequestContentTypes;
+    }
+
+    public function getAllowedOrigins() : array {
+        return $this->AllowedOrigins;
+    }
+
+    public function getCacheDuration() : ?string {
+        return CACHE_DURATION;
+    }
+
+    public function getCacheFile() : ?string {
+        return $this->CacheFile;
+    }
+
+    public function getCacheFolderName() : string {
+        return CACHE_FOLDER_NAME;
+    }
+
+    public function getRelaxForTextTypeRequests() : bool {
+        return RELAX_FOR_TEXT_TYPE_REQUESTS;
+    }
+
+    public function getForceAjaxRequest() : bool {
+        return FORCE_AJAX_REQUEST;
+    }
+
+    public function getDefaultResponseContentType() : string {
+        return $this->DefaultResponseContentType;
     }
 
     public function getAcceptHeader() : string {
         return $this->RequestHeaders[ "Accept" ];
     }
 
-    public function getIdxAcceptHeaderInAllowed() : int|string|false {
-        return array_search( $this->RequestHeaders[ "Accept" ], $this->AllowedAcceptHeaders );
+    public function getResponseTypeFromResponseContentType() : string|null {
+        $idx = array_search( $this->ResponseContentType, $this->AllowedAcceptHeaders );
+        if( $idx !== false ) {
+            return $this->AllowedResponseTypes[ $idx ];
+        }
+        return null;
     }
 
     public function hasAcceptHeader() : bool {
@@ -146,7 +197,7 @@ class SimpleAPI {
         return ( !isset($_SERVER['HTTP_X_REQUESTED_WITH'] ) || empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) || strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) != 'xmlhttprequest' ) === false;
     }
 
-    public function enforceAjaxRequest() : void {
+    private function enforceAjaxRequest() : void {
         if( false === $this->isAjaxRequest() ) {
             header( $_SERVER[ "SERVER_PROTOCOL" ]." 418 I'm a teapot", true, 418 );
             $errorMessage = '{"error":"Request was not made via AJAX. When using Request Method ' . strtoupper( $_SERVER[ 'REQUEST_METHOD' ] ) . ', only AJAX requests from authorized Origins and Referers are processable."}';
@@ -154,8 +205,9 @@ class SimpleAPI {
         }
     }
 
-    public function isAllowedAcceptHeader() : bool {
-        return in_array( explode( ',', $this->RequestHeaders[ "Accept" ] )[0], $this->AllowedAcceptHeaders );
+    public function isAllowedAcceptHeader( string $acceptHeader ) : bool {
+        //return in_array( explode( ',', $this->RequestHeaders[ "Accept" ] )[0], $this->AllowedAcceptHeaders );
+        return in_array( $acceptHeader, $this->AllowedAcceptHeaders );
     }
 
     public function isAllowedOrigin() : bool {
@@ -163,7 +215,11 @@ class SimpleAPI {
     }
 
     public function isAllowedReferer() : bool {
-        return in_array( $_SERVER["HTTP_REFERER"], $this->AllowedReferers );
+        if( count($this->AllowedReferers) === 1 && $this->AllowedReferers[0] === "*" ) {
+            return true;
+        } else {
+            return in_array( $_SERVER["HTTP_REFERER"], $this->AllowedReferers );
+        }
     }
 
     public function getAllowedRequestMethods() : array {
@@ -186,6 +242,10 @@ class SimpleAPI {
         return $this->RequestContentType;
     }
 
+    public function getResponseContentType() : ?string {
+        return $this->ResponseContentType;
+    }
+
     public function getAllowedReferers() : array {
         return $this->AllowedReferers;
     }
@@ -193,13 +253,24 @@ class SimpleAPI {
     public function enforceReferer() : void {
         if( false === $this->isAllowedReferer() ) {
             header( $_SERVER[ "SERVER_PROTOCOL" ]." 401 Unauthorized", true, 401 );
-            $errorMessage = '{"error":"Request is coming from unauthorized referer ' . $_SERVER["HTTP_REFERER"] . '. Only AJAX requests from authorized Origins and Referers are processable."}';
+            $errorMessage = '{"error":"Request is coming from unauthorized referer ' . $_SERVER["HTTP_REFERER"] . '. Only AJAX requests from authorized Referers are processable."}';
+            die( $errorMessage );
+        }
+    }
+
+    public function validateResponseTypeParam( string $ResponseTypeParam ) {
+        if( in_array( $ResponseTypeParam, $this->AllowedResponseTypes ) ) {
+            $this->ResponseContentType = $this->AllowedAcceptHeaders[ array_search( $ResponseTypeParam, $this->AllowedResponseTypes ) ];
+        } else {
+            header( $_SERVER[ "SERVER_PROTOCOL" ]." 406 Not Acceptable", true, 406 );
+            $errorMessage = '{"error":"You are requesting a content type which this API cannot produce. Allowed content types are ';
+            $errorMessage .= implode( ' and ', $this->AllowedResponseTypes );
+            $errorMessage .= ', but you have issued a parameter requesting a Content Type of ' . strtoupper( $ResponseTypeParam ) . '"}';
             die( $errorMessage );
         }
     }
 
     public function retrieveRequestParamsFromJsonBody() : object {
-
         $json = file_get_contents( 'php://input' );
         $data = json_decode( $json );
         if( "" === $json ){
@@ -210,13 +281,87 @@ class SimpleAPI {
             die( '{"error":"Malformed JSON data received in the request: <' . $json . '>, ' . json_last_error_msg() . '"}' );
         }
         return $data;
+    }
 
+
+    public function setCacheDuration() : void {
+        $secondsSinceUnixEpoch  = time();
+        $minutesSinceUnixEpoch  = floor( $secondsSinceUnixEpoch    / 60 );
+        $hoursSinceUnixEpoch    = floor( $minutesSinceUnixEpoch    / 60 );
+        $daysSinceUnixEpoch     = floor( $hoursSinceUnixEpoch      / 24 );
+        $weeksSinceUnixEpoch    = floor( $daysSinceUnixEpoch       / 7  );
+        $monthsSinceUnixEpoch   = floor( $daysSinceUnixEpoch       / 30 );
+        switch( CACHE_DURATION ) {
+            case CacheDuration::INFINITE:
+                $this->CacheDuration = "";
+                break;
+            case CacheDuration::MINUTE:
+                $this->CacheDuration = "_" . CACHE_DURATION . "_" . $minutesSinceUnixEpoch;
+                break;
+            case CacheDuration::HOUR:
+                $this->CacheDuration = "_" . CACHE_DURATION . "_" . $hoursSinceUnixEpoch;
+                break;
+            case CacheDuration::DAY:
+                $this->CacheDuration = "_" . CACHE_DURATION . "_" . $daysSinceUnixEpoch;
+                break;
+            case CacheDuration::WEEK:
+                $this->CacheDuration = "_" . CACHE_DURATION . "_" . $weeksSinceUnixEpoch;
+                break;
+            case CacheDuration::MONTH:
+                $this->CacheDuration = "_" . CACHE_DURATION . "_" . $monthsSinceUnixEpoch;
+                break;
+            case CacheDuration::YEAR:
+                $this->CacheDuration = "_" . CACHE_DURATION . "_" . date( "Y" ); //A full numeric representation of the year (4 digits) of the request
+                break;
+            default:
+                $this->CacheDuration = null;
+        }
+    }
+
+    private function determineCacheFile( APIParams $apiParams, string $apiVersion = "" ) : ?string {
+        $this->CacheFilePath = CACHE_FOLDER_NAME . "/v" . str_replace( ".", "_", $apiVersion );
+        if( $this->CacheDuration !== null ) {
+            $cacheFileName = md5( serialize( $apiParams) ) . $this->CacheDuration . "." . ($apiParams->ResponseType !== null ? strtolower( $apiParams->ResponseType ) : "");
+            return $this->CacheFilePath . "/" . $cacheFileName;
+        }
+        return null;
+    }
+
+    public function writeResponseToCacheFile( string|bool $response ) {
+        if( $this->CacheDuration !== null ) {
+            //we make sure we have a Cache folder for the current Version, if we have enabled cached responses
+            if( realpath( $this->CacheFilePath ) === false ) {
+                mkdir( $this->CacheFilePath, 0755, true );
+            }
+            if( gettype($response) === 'string' && $this->CacheFile !== null ) {
+                file_put_contents( $this->CacheFile, $response );
+            }
+        }
+    }
+
+    /**
+     * Function getCacheFileIsAvailable
+     * We define this function here and not in SimpleAPI,
+     *   since it depends on the API parameters and on the API version
+    */
+    public function getCacheFileIfAvailable( APIParams $apiParams, string $apiVersion = "" ) : ?string {
+        $this->CacheFile = $this->determineCacheFile( $apiParams, $apiVersion );
+        if( $this->CacheFile !== null && file_exists( $this->CacheFile ) ) {
+            return file_get_contents( $this->CacheFile );
+        }
+        return null;
     }
 
     public function Init() {
         $this->setAllowedOriginHeader();
         $this->setAccessControlAllowMethods();
         $this->validateRequestContentType();
+        $this->validateAcceptHeader();
+        if( FORCE_AJAX_REQUEST ) {
+            $this->enforceAjaxRequest();
+        }
+        $this->enforceReferer();
+        $this->setCacheDuration();
     }
 
 }

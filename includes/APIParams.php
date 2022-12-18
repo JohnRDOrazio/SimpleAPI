@@ -33,7 +33,7 @@ class APIParams {
                         $this->Param2 = $this->enforceParam2Validity( $value );
                         break;
                     case "RESPONSETYPE":
-                        $this->ResponseType = ResponseType::isValid( strtoupper( $value ) ) ? strtoupper( $value ) : ResponseType::JSON;
+                        $this->ResponseType = ResponseType::isValid( strtoupper( $value ) ) ? strtoupper( $value ) : null;
                         break;
                 }
             }
@@ -56,5 +56,9 @@ class APIParams {
             return $value;
         }
         return 0;
+    }
+
+    public function setResponseType( string $value ) : void {
+        $this->ResponseType = $value;
     }
 }

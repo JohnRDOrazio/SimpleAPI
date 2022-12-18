@@ -7,7 +7,8 @@ class CacheDuration {
     const WEEK      = "WEEK";
     const MONTH     = "MONTH";
     const YEAR      = "YEAR";
-    public static array $values = [ "MINUTE", "HOUR", "DAY", "WEEK", "MONTH", "YEAR" ];
+    const INFINITE      = "INFINITE";
+    public static array $values = [ "MINUTE", "HOUR", "DAY", "WEEK", "MONTH", "YEAR", "INFINITE" ];
 
     public static function isValid( $value ) {
         return in_array( $value, self::$values );
