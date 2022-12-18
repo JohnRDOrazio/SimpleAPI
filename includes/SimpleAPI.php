@@ -255,7 +255,12 @@ class SimpleAPI {
         return $data;
     }
 
-
+    /**
+     * Function setCacheDuration
+     * Returns a string that will be appended to the Cache File Name
+     *   which represents the desired cache duration associated with the file
+     *   by calculating current time against the start of the unix epoch
+     */
     public function setCacheDuration() : void {
         $secondsSinceUnixEpoch  = time();
         $minutesSinceUnixEpoch  = floor( $secondsSinceUnixEpoch    / 60 );
@@ -313,8 +318,6 @@ class SimpleAPI {
 
     /**
      * Function getCacheFileIsAvailable
-     * We define this function here and not in SimpleAPI,
-     *   since it depends on the API parameters and on the API version
     */
     public function getCacheFileIfAvailable( APIParams $apiParams, string $apiVersion = "" ) : ?string {
         $this->CacheFile = $this->determineCacheFile( $apiParams, $apiVersion );
