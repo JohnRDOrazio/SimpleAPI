@@ -1,4 +1,6 @@
 # SimpleAPI
+[![CodeFactor](https://www.codefactor.io/repository/github/johnrdorazio/simpleapi/badge)](https://www.codefactor.io/repository/github/johnrdorazio/simpleapi)
+
 Jumpstart your API (whether RESTful or not) with a base class that you can fine tune for your own API implementation.
 
 There are so many discussions about what is truly RESTful and what is not, this project doesn't pretend to be truly RESTful out of the box.
