@@ -42,10 +42,6 @@ $cfgDflt["ALLOWED_ACCEPT_HEADERS"] = [
 ];
 $cfgDflt["DEFAULT_MIME_TYPE"] = "application/json";
 $cfgDflt["RELAX_FOR_TEXT_TYPE_REQUESTS"] = true;
-$cfgDflt["ALLOWED_RESPONSE_TYPES"] = [
-    "JSON",
-    "XML",
-];
 $cfgDflt["CACHE_FOLDER_NAME"] = "apiCache";
 $cfgDflt["CACHE_DURATION"] = "MONTH";
 $cfgDflt["ALLOWED_ORIGINS"] = [ "*" ];
