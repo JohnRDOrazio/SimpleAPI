@@ -4,7 +4,7 @@
  * class ResponseType
  * Represents possible Content Types for the Response
  *  as indicated in the request's Accept header
- *  (or possibly in a request paramter)
+ *  (or possibly in a request parameter)
  * The $values array must follow exactly the $values array
  *  in the AcceptHeader class, so that conversions can be made
  */
