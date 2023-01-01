@@ -47,10 +47,12 @@ $cfg["ALLOWED_REQUEST_CONTENT_TYPES"] = [
 /**
  * ALLOWED_ACCEPT_HEADERS
  * The client formulating the request can let the endpoint know which resource MIME type it would like in the response,
- * by sending Accept header in the request
+ *  by sending Accept header in the request
  * Set here the MIME types that the API will support, and that clients will be able to request
  * For any request that includes a non supported Accept header,
- * the SimpleAPI will return a "406 Not Acceptable" http status header
+ *  the SimpleAPI will return a "406 Not Acceptable" http status header
+ * Even if the response type is set via a parameter, this array will still define
+ *  the supported response types
  */
 $cfg["ALLOWED_ACCEPT_HEADERS"] = [
     // "application/octet-stream",
@@ -93,43 +95,6 @@ $cfg["DEFAULT_MIME_TYPE"] = "application/json";
  * Setting this option to true will allow such requests to be made, while the Response will still have the default Content type
  */
 $cfg["RELAX_FOR_TEXT_TYPE_REQUESTS"] = true;
-
-/**
- * ALLOWED_RESPONSE_TYPES
- * These should correspond to the ALLOWED_ACCEPT_HEADERS in the exact same order
- * If you allow the client to set the desired content type for the response using a request parameter
- *   rather than by sending an Accept header, you will probably want to let the client use a simple
- *   string abbreviation for the MIME type rather than the full mime type used by an Accept header
- * These values indicate the supported string abbreviations corresponding to the supported Accept headers
- * These values are also used (lowercased) as the corresponding file extension for the cached response files
- *   so they must not be changed, only commented or uncommented in the same manner as the ALLOWED_ACCEPT_HEADERS
- */
-$cfg["ALLOWED_RESPONSE_TYPES"] = [
-    // "ATTACHMENT",
-    "JSON",
-    "XML",
-    // "PDF",
-    // "HTML",
-    // "ICS",
-    // "TEXT",
-    // "CSV",
-    // "CSS",
-    // "JS",
-    // "MPEG",
-    // "VORBIS",
-    // "OGG",
-    // "WEBM",
-    // "JPG",
-    // "PNG",
-    // "APNG",
-    // "AVIF",
-    // "GIF",
-    // "SVG",
-    // "WEBP",
-    // "MP4",
-    // "VIDEO_OGG",
-    // "VIDEO_WEBM"
-];
 
 /**
  * CACHE_DURATION
