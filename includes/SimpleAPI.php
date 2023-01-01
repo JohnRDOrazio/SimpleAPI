@@ -30,7 +30,7 @@ class SimpleAPI {
         $this->AllowedAcceptHeaders             = ALLOWED_ACCEPT_HEADERS;
         $this->AllowedRequestMethods            = ALLOWED_REQUEST_METHODS;
         $this->AllowedRequestContentTypes       = ALLOWED_REQUEST_CONTENT_TYPES;
-        $this->AllowedResponseTypes             = array_map(function($mimeType): string => ResponseType::fromMimeType($mimeType), ALLOWED_ACCEPT_HEADERS);
+        $this->AllowedResponseTypes             = array_map(fn($mimeType): string => ResponseType::fromMimeType($mimeType), ALLOWED_ACCEPT_HEADERS);
         $this->DefaultResponseContentType       = DEFAULT_MIME_TYPE;
         $this->RequestHeaders                   = getallheaders();
         $this->JsonEncodedRequestHeaders        = json_encode( $this->RequestHeaders );
