@@ -53,7 +53,7 @@ class AcceptHeader {
         "VIDEO_WEBM"=> "video/webm"
     ];
     
-    public static array $fileExt [
+    public static array $fileExt = [
         "application/octet-stream"  => "blob",
         "application/json"          => "json",
         "application/xml"           => "xml",
