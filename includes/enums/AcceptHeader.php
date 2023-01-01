@@ -52,6 +52,33 @@ class AcceptHeader {
         "VIDEO_OGG" => "video/ogg",
         "VIDEO_WEBM"=> "video/webm"
     ];
+    
+    public static array $fileExt [
+        "application/octet-stream"  => "blob",
+        "application/json"          => "json",
+        "application/xml"           => "xml",
+        "application/pdf"           => "pdf",
+        "text/html"                 => "html",
+        "text/calendar"             => "ics",
+        "text/plain"                => "txt",
+        "text/csv"                  => "csv",
+        "text/css"                  => "css",
+        "text/javascript"           => "js",
+        "audio/mpeg"                => "mpg",
+        "audio/vorbis"              => "vorbis",
+        "audio/ogg"                 => "ogg",
+        "audio/webm"                => "webm",
+        "image/jpeg"                => "jpg",
+        "image/png"                 => "png",
+        "image/apng"                => "apng",
+        "image/avif"                => "avif",
+        "image/gif"                 => "gif",
+        "image/svg+xml"             => "svg",
+        "image/webp"                => "webp",
+        "video/mp4"                 => "mp4",
+        "video/ogg"                 => "ogg",
+        "video/webm"                => "webm"    
+    ];
 
     public static function isValid( string $value ) : bool {
         return in_array( $value, self::$values );
@@ -59,5 +86,9 @@ class AcceptHeader {
     
     public static function fromResponseType( string $value ) : string|false {
         return array_search( $value, self::$values );
+    }
+    
+    public static function toFileExt( string $mimeType ) : string|false {
+        return array_search( $mimeType, self::$fileExt );
     }
 }
