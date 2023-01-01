@@ -61,6 +61,33 @@ class ResponseType {
         "video/ogg"                 => "VIDEO_OGG",
         "video/webm"                => "VIDEO_WEBM"
     ];
+    
+    public static array $fileExt = [
+        "ATTACHMENT"    => "blob",
+        "JSON"          => "json",
+        "XML"           => "xml",
+        "PDF"           => "pdf",
+        "HTML"          => "html",
+        "ICS"           => "ics",
+        "TEXT"          => "txt",
+        "CSV"           => "csv",
+        "CSS"           => "css",
+        "JS"            => "js",
+        "MPEG"          => "mpg",
+        "VORBIS"        => "vorbis",
+        "OGG"           => "ogg",
+        "WEBM"          => "webm",
+        "JPG"           => "jpg",
+        "PNG"           => "png",
+        "APNG"          => "apng",
+        "AVIF"          => "avif",
+        "GIF"           => "gif",
+        "SVG"           => "svg",
+        "WEBP"          => "webp",
+        "MP4"           => "mp4",
+        "VIDEO_OGG"     => "ogg",
+        "VIDEO_WEBM"    => "webm"
+    ];
 
     public static function isValid( $value ) : bool {
         return in_array( $value, self::$values );
@@ -68,5 +95,9 @@ class ResponseType {
     
     public static function fromMimeType( string $mimeType ) : string|false {
         return array_search( $mimeType, self::$values );
+    }
+    
+    public static function toFileExt( string $responseType ) : string|false {
+        return array_search( $responseType, self::$fileExt );
     }
 }
