@@ -27,33 +27,37 @@ class AcceptHeader {
     const VIDEO_WEBM= "video/webm";
 
     public static array $values = [
-        "application/octet-stream",
-        "application/json",
-        "application/xml",
-        "application/pdf",
-        "text/html",
-        "text/calendar",
-        "text/plain",
-        "text/csv",
-        "text/css",
-        "text/javascript",
-        "audio/mpeg",
-        "audio/vorbis",
-        "audio/ogg",
-        "audio/webm",
-        "image/jpeg",
-        "image/png",
-        "image/apng",
-        "image/avif",
-        "image/gif",
-        "image/svg+xml",
-        "image/webp",
-        "video/mp4",
-        "video/ogg",
-        "video/webm"
+        "ATTACHMENT"=> "application/octet-stream",
+        "JSON"      => "application/json",
+        "XML"       => "application/xml",
+        "PDF"       => "application/pdf",
+        "HTML"      => "text/html",
+        "ICS"       => "text/calendar",
+        "TEXT"      => "text/plain",
+        "CSV"       => "text/csv",
+        "CSS"       => "text/css",
+        "JS"        => "text/javascript",
+        "MPEG"      => "audio/mpeg",
+        "VORBIS"    => "audio/vorbis",
+        "OGG"       => "audio/ogg",
+        "WEBM"      => "audio/webm",
+        "JPG"       => "image/jpeg",
+        "PNG"       => "image/png",
+        "APNG"      => "image/apng",
+        "AVIF"      => "image/avif",
+        "GIF"       => "image/gif",
+        "SVG"       => "image/svg+xml",
+        "WEBP"      => "image/webp",
+        "MP4"       => "video/mp4",
+        "VIDEO_OGG" => "video/ogg",
+        "VIDEO_WEBM"=> "video/webm"
     ];
 
-    public static function isValid( $value ) {
+    public static function isValid( string $value ) : bool {
         return in_array( $value, self::$values );
+    }
+    
+    public static function fromResponseType( string $value ) : string|false {
+        return array_search( $value, self::$values );
     }
 }
