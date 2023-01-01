@@ -36,33 +36,37 @@ class ResponseType {
     const VIDEO_WEBM    = "VIDEO_WEBM";
 
     public static array $values = [
-        "ATTACHMENT",
-        "JSON",
-        "XML",
-        "PDF",
-        "HTML",
-        "ICS",
-        "TEXT",
-        "CSV",
-        "CSS",
-        "JS",
-        "MPEG",
-        "VORBIS",
-        "OGG",
-        "WEBM",
-        "JPG",
-        "PNG",
-        "APNG",
-        "AVIF",
-        "GIF",
-        "SVG",
-        "WEBP",
-        "MP4",
-        "VIDEO_OGG",
-        "VIDEO_WEBM"
+        "application/octet-stream"  => "ATTACHMENT",
+        "application/json"          => "JSON",
+        "application/xml"           => "XML",
+        "application/pdf"           => "PDF",
+        "text/html"                 => "HTML",
+        "text/calendar"             => "ICS",
+        "text/plain"                => "TEXT",
+        "text/csv"                  => "CSV",
+        "text/css"                  => "CSS",
+        "text/javascript"           => "JS",
+        "audio/mpeg"                => "MPEG",
+        "audio/vorbis"              => "VORBIS",
+        "audio/ogg"                 => "OGG",
+        "audio/webm"                => "WEBM",
+        "image/jpeg"                => "JPG",
+        "image/png"                 => "PNG",
+        "image/apng"                => "APNG",
+        "image/avif"                => "AVIF",
+        "image/gif"                 => "GIF",
+        "image/svg+xml"             => "SVG",
+        "image/webp"                => "WEBP",
+        "video/mp4"                 => "MP4",
+        "video/ogg"                 => "VIDEO_OGG",
+        "video/webm"                => "VIDEO_WEBM"
     ];
 
-    public static function isValid( $value ) {
+    public static function isValid( $value ) : bool {
         return in_array( $value, self::$values );
+    }
+    
+    public static function fromMimeType( string $mimeType ) : string|false {
+        return array_search( $mimeType, self::$values );
     }
 }
