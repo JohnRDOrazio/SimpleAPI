@@ -157,6 +157,8 @@ class SimpleAPI {
         $idx = array_search( $this->ResponseContentType, $this->AllowedAcceptHeaders );
         if( $idx !== false ) {
             return $this->AllowedResponseTypes[ $idx ];
+        } else {
+            return $this->DefaultResponseContentType;
         }
         return null;
     }
@@ -298,7 +300,8 @@ class SimpleAPI {
     private function determineCacheFile( APIParams $apiParams, string $apiVersion = "" ) : ?string {
         $this->CacheFilePath = CACHE_FOLDER_NAME . "/v" . str_replace( ".", "_", $apiVersion );
         if( $this->CacheDuration !== null ) {
-            $cacheFileName = md5( serialize( $apiParams) ) . $this->CacheDuration . "." . ($apiParams->ResponseType !== null ? strtolower( $apiParams->ResponseType ) : "");
+            $cacheFileExtension = $apiParams->ResponseType !== null ? ResponseType::toFileExt( $apiParams->ResponseType ) : AcceptHeader::toFileExt( $this->DefaultResponseContentType );
+            $cacheFileName = md5( serialize( $apiParams) ) . $this->CacheDuration . "." . $cacheFileExtension;
             return $this->CacheFilePath . "/" . $cacheFileName;
         }
         return null;

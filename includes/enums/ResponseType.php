@@ -94,10 +94,16 @@ class ResponseType {
     }
     
     public static function fromMimeType( string $mimeType ) : string|false {
-        return array_search( $mimeType, self::$values );
+        if( array_key_exists( $mimeType, self::$values ) ) {
+            return self::$values[ $mimeType ];
+        }
+        return false;
     }
     
     public static function toFileExt( string $responseType ) : string|false {
-        return array_search( $responseType, self::$fileExt );
+        if( array_key_exists( $responseType, self::$fileExt ) ) {
+            return self::$fileExt[ $responseType ];
+        }
+        return false;
     }
 }
