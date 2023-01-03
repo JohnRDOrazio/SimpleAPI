@@ -77,18 +77,24 @@ class AcceptHeader {
         "image/webp"                => "webp",
         "video/mp4"                 => "mp4",
         "video/ogg"                 => "ogg",
-        "video/webm"                => "webm"    
+        "video/webm"                => "webm"
     ];
 
     public static function isValid( string $value ) : bool {
         return in_array( $value, self::$values );
     }
-    
-    public static function fromResponseType( string $value ) : string|false {
-        return array_search( $value, self::$values );
+
+    public static function fromResponseType( string $responseType ) : string|false {
+        if( array_key_exists( $responseType, self::$values ) ) {
+            return self::$values[ $responseType ];
+        }
+        return false;
     }
-    
+
     public static function toFileExt( string $mimeType ) : string|false {
-        return array_search( $mimeType, self::$fileExt );
+        if( array_key_exists( $mimeType, self::$fileExt ) ) {
+            return self::$fileExt[ $mimeType ];
+        }
+        return false;
     }
 }
