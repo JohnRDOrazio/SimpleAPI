@@ -1,11 +1,24 @@
 <?php
 
-use JohnRDOrazio\SimpleAPI;
+use JohnRDOrazio\SimpleAPI\SimpleAPI;
 use JohnRDOrazio\SimpleAPI\ApiParams;
+use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
+use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
+use JohnRDOrazio\SimpleAPI\Enums\RequestContentType;
 
 //you may include any tranforms you may need, based on your supported response content types
 use JohnRDOrazio\SimpleAPI\Transforms\XmlTransform;
 use JohnRDOrazio\SimpleAPI\Transforms\IcsTransform;
+
+//Use composer autoload if SimpleAPI was installed via composer
+if( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+    echo 'autoloader file exists!' . PHP_EOL;
+    require __DIR__ . '/vendor/autoload.php';
+} else { //if( !class_exists("\Composer\Autoload\ClassLoader") )
+    echo 'composer autoloader not found, attempting to bootstrap manually...' . PHP_EOL;
+    spl_autoload_register( 'SampleAPI::autoload' );
+}
+
 
 /**
  * This is an example implementation of the SimpleAPI class,
@@ -221,6 +234,38 @@ class SampleAPI {
             $responseContents = $this->generateResponse();
         }
         $this->outputResponse( $responseContents );
+    }
+
+    public static function autoload( $class ) {
+        // project-specific namespace prefix
+        $prefix = 'JohnRDOrazio\\SimpleAPI\\';
+
+        // base directory for the namespace prefix
+        $baseDir = __DIR__. '/src/';
+
+        // does the class use the namespace prefix?
+        $len = strlen($prefix);
+        if (strncmp($prefix, $class, $len) !== 0) {
+            echo "class " . $class . " does not seem to fit the description ($prefix)" . PHP_EOL;
+            // no, move to the next registered autoloader
+            return;
+        }
+
+        // get the relative class name
+        $relativeClass = substr($class, $len);
+
+        // replace the namespace prefix with the base directory, replace namespace
+        // separators with directory separators in the relative class name, append
+        // with .php
+        $file = $baseDir.str_replace('\\', '/', $relativeClass).'.php';
+        echo "relativeClass = " . $relativeClass . PHP_EOL;
+        echo "file = " . $file . PHP_EOL;
+        // if the file exists, require it
+        if (file_exists($file)) {
+            require_once $file;
+        } else {
+            echo "file $file does not seem to exist...";
+        }
     }
 
 }

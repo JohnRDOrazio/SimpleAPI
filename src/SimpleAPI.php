@@ -3,14 +3,15 @@
 namespace JohnRDOrazio\SimpleAPI;
 
 use JohnRDOrazio\SimpleAPI\Enums\AcceptHeader;
-use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
-use JohnRDOrazio\SimpleAPI\Enums\RequestContentType;
+//use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
+//use JohnRDOrazio\SimpleAPI\Enums\RequestContentType;
 use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
 use JohnRDOrazio\SimpleAPI\Enums\CacheDuration;
 use JohnRDOrazio\SimpleAPI\Config;
 
 class SimpleAPI {
 
+    const VERSION                                   = '0.1.1';
     private array $AllowedOrigins;
     private array $AllowedReferers;
     private array $AllowedAcceptHeaders;
@@ -25,7 +26,6 @@ class SimpleAPI {
     private ?string $CacheDuration                  = null;
     private ?string $CacheFile                      = null;
     private ?string $CacheFilePath                  = null;
-    const VERSION                                   = '0.1.1';
 
     public function __construct() {
         Config::LoadConfigs();
