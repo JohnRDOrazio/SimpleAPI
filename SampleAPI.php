@@ -123,6 +123,13 @@ class SampleAPI {
         curl_setopt( $ch, CURLOPT_URL, $GithubReleasesAPI );
         curl_setopt( $ch, CURLOPT_USERAGENT, 'SimpleAPI' );
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+        if( !isset($_SERVER['HTTPS'])
+           || $_SERVER['HTTPS'] === 'off'
+           || $_SERVER['HTTPS'] === 0
+           || ( isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] !== 'https' )
+          ) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        }
         $latestReleaseJSON = curl_exec( $ch );
         if ( curl_errno( $ch ) ) {
             $ResponseObj->SimpleAPILatestVersion                = curl_error( $ch );
