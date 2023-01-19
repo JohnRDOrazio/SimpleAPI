@@ -2,13 +2,7 @@
 
 namespace JohnRDOrazio\SimpleAPI;
 
-if( false === class_exists("\Composer\Autoload\ClassLoader") ) {
-    // composer autoload.php has not been included/required
-    include_once( 'Enums/ResponseType.php' );
-}
-
 use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
-
 
 class ApiParams {
     //define a public class property for each of your supported API parameters

@@ -8,7 +8,5 @@ error_reporting(E_ALL);
 //uncomment the following line
 include_once( "SampleAPI.php" );
 
-use JohnRDOrazio\SampleAPI;
-
 $SampleAPI = new SampleAPI();
 $SampleAPI->Init();

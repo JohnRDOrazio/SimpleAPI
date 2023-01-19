@@ -1,17 +1,36 @@
 <?php
 
-//you may rename the namespace according to your own implementation
-namespace JohnRDOrazio\SampleAPI;
+if( !class_exists("\Composer\Autoload\ClassLoader") ) {
+    spl_autoload_register(function ($class) {
 
-//if not using composer to autoload the SimpleAPI class,
-//uncomment the following two lines
-require_once( 'src/SimpleAPI.php' );
-require_once( "src/ApiParams.php" );
+        // project-specific namespace prefix
+        $prefix = 'JohnRDOrazio\\SimpleAPI\\';
 
-//again for the transforms, if not using composer to autoload the SimpleAPI class,
-//uncomment the following two lines
-require_once( "src/Transforms/XmlTransform.php" );
-require_once( "src/Transforms/IcsTransform.php" );
+        // base directory for the namespace prefix
+        $baseDir = __DIR__.'/src/';
+
+        // does the class use the namespace prefix?
+        $len = strlen($prefix);
+        if (strncmp($prefix, $class, $len) !== 0) {
+            // no, move to the next registered autoloader
+            return;
+        }
+
+        // get the relative class name
+        $relativeClass = substr($class, $len);
+
+        // replace the namespace prefix with the base directory, replace namespace
+        // separators with directory separators in the relative class name, append
+        // with .php
+        $file = $baseDir.str_replace('\\', '/', $relativeClass).'.php';
+
+        // if the file exists, require it
+        if (file_exists($file)) {
+            require $file;
+        }
+    });
+
+}
 
 use JohnRDOrazio\SimpleAPI;
 use JohnRDOrazio\SimpleAPI\ApiParams;
