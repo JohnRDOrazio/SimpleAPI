@@ -34,6 +34,8 @@ with the SampleAPI class. You should adapt the SampleAPI class so as to create y
 The SampleAPI class is not an API endpoint: API endpoints should implement the SampleAPI middleware,
 and each endpoint should set the SimpleAPI to behave according to its own needs through the SampleAPI middleware.
 
+An example endpoint is included as the file `endpoint.php`: this simply instantiates the `SampleAPI` class, which in turn instantiates the `SimpleAPI` class.
+
 ## Why the SimpleAPI ?
 Many API implementations nowadays are handled with [Ruby on Rails](https://rubyonrails.org/), or [Python](https://www.python.org/) + [Flask](https://flask.palletsprojects.com/), or with complex frameworks such as [Laravel](https://laravel.com/) that have a lot of functionality.
 
