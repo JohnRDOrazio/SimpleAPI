@@ -20,9 +20,10 @@ class SimpleAPI {
     private ?string $RequestContentType             = null;
     private ?string $ResponseContentType            = null;
     private string $DefaultResponseContentType      = '';
-    private ?string $CacheDuration                   = null;
+    private ?string $CacheDuration                  = null;
     private ?string $CacheFile                      = null;
     private ?string $CacheFilePath                  = null;
+    const VERSION                                   = '0.1.1';
 
     public function __construct(){
         $this->AllowedOrigins                   = ALLOWED_ORIGINS;
