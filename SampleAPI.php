@@ -124,9 +124,17 @@ class SampleAPI {
         curl_setopt( $ch, CURLOPT_USERAGENT, 'SimpleAPI' );
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
         $latestReleaseJSON = curl_exec( $ch );
+        if ( curl_errno( $ch ) ) {
+            $ResponseObj->SimpleAPILatestVersion                = curl_error( $ch );
+        } else {
+            $latestReleaseJSON = json_decode( $latestReleaseJSON );
+            if( json_last_error() !== JSON_ERROR_NONE ){
+                $ResponseObj->SimpleAPILatestVersion            = json_last_error_msg();
+            } else {
+                $ResponseObj->SimpleAPILatestVersion            = str_replace( 'v', '', $latestReleaseJSON->tag_name );
+            }
+        }
         curl_close( $ch );
-        $latestReleaseJSON = json_decode( $latestReleaseJSON );
-        $ResponseObj->SimpleAPILatestVersion                = str_replace( 'v', '', $latestReleaseJSON->tag_name );
 
         //This object will be transformed into the JSON or XML or ICS response, or whatever response type was requested
         //here you may define your own cases to handle each response type supported by your API
