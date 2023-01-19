@@ -2,13 +2,6 @@
 
 namespace JohnRDOrazio\SimpleAPI;
 
-use JohnRDOrazio\SimpleAPI\Enums\AcceptHeader;
-use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
-use JohnRDOrazio\SimpleAPI\Enums\RequestContentType;
-use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
-use JohnRDOrazio\SimpleAPI\Enums\CacheDuration;
-use JohnRDOrazio\SimpleAPI\Config;
-
 if( false === class_exists("\Composer\Autoload\ClassLoader") ) {
     // composer autoload.php has not been included/required
     require_once( "Enums/AcceptHeader.php" );
@@ -18,6 +11,13 @@ if( false === class_exists("\Composer\Autoload\ClassLoader") ) {
     require_once( "Enums/CacheDuration.php" );
     require_once( "Config.php" );
 }
+
+use JohnRDOrazio\SimpleAPI\Enums\AcceptHeader;
+use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
+use JohnRDOrazio\SimpleAPI\Enums\RequestContentType;
+use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
+use JohnRDOrazio\SimpleAPI\Enums\CacheDuration;
+use JohnRDOrazio\SimpleAPI\Config;
 
 class SimpleAPI {
 
