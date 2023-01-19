@@ -19,12 +19,12 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once( 'includes/SimpleAPI.php' );
-require_once( "includes/APIParams.php" );
+require_once( 'src/SimpleAPI.php' );
+require_once( "src/includes/APIParams.php" );
 
 //include any tranforms you may need, based on your supported response content types
-require_once( "includes/transforms/XmlTransform.php" );
-require_once( "includes/transforms/IcsTransform.php" );
+require_once( "src/includes/transforms/XmlTransform.php" );
+require_once( "src/includes/transforms/IcsTransform.php" );
 
 class SampleAPI {
     const API_VERSION                               = '0.1';
