@@ -2,6 +2,8 @@
     "name": "johnrdorazio/simple-api",
     "description": "jumpstart your API (whether RESTful or not) with a base class that you can fine tune for any implementation",
     "type": "library",
+    "keywords": ["api","rest","restful","simpleapi"],
+    "homepage": "https://github.com/JohnRDOrazio/SimpleAPI",
     "license": "Apache-2.0",
     "autoload": {
         "psr-4": {
@@ -11,7 +13,9 @@
     "authors": [
         {
             "name": "John R. D'Orazio",
-            "email": "priest@johnromanodorazio.com"
+            "email": "priest@johnromanodorazio.com",
+            "homepage": "https://www.johnromanodorazio.com",
+            "role": "Developer"
         }
     ],
     "minimum-stability": "stable",
