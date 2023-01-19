@@ -9,10 +9,14 @@ if( file_exists( 'config.php' ) ) {
 }
 else if( file_exists( '../config.php' ) ) {
     require_once( "../config.php" );
-} else if (
-    ( file_exists( 'config.sample.php' ) || file_exists( '../config.sample.php' ) )
+}
+else if( file_exists( '../../config.php' ) ) {
+    require_once( "../../config.php" );
+}
+else if (
+    ( file_exists( 'config.sample.php' ) || file_exists( '../config.sample.php' ) || file_exists( '../../config.sample.php' ) )
     &&
-    ( !file_exists( 'config.php' ) || !file_exists( '../config.php' ) )
+    ( !file_exists( 'config.php' ) || !file_exists( '../config.php' ) || !file_exists( '../../config.php' ) )
   ) {
     header( "Content-Type: text/html; charset=utf-8" );
     $html = '<h3>Welcome to SimpleAPI!</h3>';
