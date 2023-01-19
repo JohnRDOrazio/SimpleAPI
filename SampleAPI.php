@@ -14,7 +14,6 @@
  *   You may not therefore need these, but you may find it useful for other purposes.
 */
 
-//TODO: see if it's possible to move the cache definitions to the SimpleAPI class
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -106,17 +105,28 @@ class SampleAPI {
         $ResponseObj->RequestContentType            = $this->SimpleAPI->getRequestContentType();
         $ResponseObj->CacheFile                     = $this->SimpleAPI->getCacheFile();
         $ResponseObj->SimpleAPICfgs = new stdClass();
-        $ResponseObj->SimpleAPICfgs->AllowedAcceptHeaders          = $this->SimpleAPI->getAllowedAcceptHeaders();
-        $ResponseObj->SimpleAPICfgs->AllowedResponseTypes          = $this->SimpleAPI->getAllowedResponseTypes();
-        $ResponseObj->SimpleAPICfgs->AllowedOrigins                = $this->SimpleAPI->getAllowedOrigins();
-        $ResponseObj->SimpleAPICfgs->AllowedReferers               = $this->SimpleAPI->getAllowedReferers();
-        $ResponseObj->SimpleAPICfgs->AllowedRequestMethods         = $this->SimpleAPI->getAllowedRequestMethods();
-        $ResponseObj->SimpleAPICfgs->AllowedRequestContentTypes    = $this->SimpleAPI->getAllowedRequestContentTypes();
-        $ResponseObj->SimpleAPICfgs->CacheDuration                 = $this->SimpleAPI->getCacheDuration();
-        $ResponseObj->SimpleAPICfgs->CacheFolderName               = $this->SimpleAPI->getCacheFolderName();
-        $ResponseObj->SimpleAPICfgs->DefaultResponseContentType    = $this->SimpleAPI->getDefaultResponseContentType();
-        $ResponseObj->SimpleAPICfgs->RelaxForTextTypeRequests      = $this->SimpleAPI->getRelaxForTextTypeRequests();
-        $ResponseObj->SimpleAPICfgs->EnforceAjaxRequests           = $this->SimpleAPI->getForceAjaxRequest();
+        $ResponseObj->SimpleAPICfgs->AllowedAcceptHeaders           = $this->SimpleAPI->getAllowedAcceptHeaders();
+        $ResponseObj->SimpleAPICfgs->AllowedResponseTypes           = $this->SimpleAPI->getAllowedResponseTypes();
+        $ResponseObj->SimpleAPICfgs->AllowedOrigins                 = $this->SimpleAPI->getAllowedOrigins();
+        $ResponseObj->SimpleAPICfgs->AllowedReferers                = $this->SimpleAPI->getAllowedReferers();
+        $ResponseObj->SimpleAPICfgs->AllowedRequestMethods          = $this->SimpleAPI->getAllowedRequestMethods();
+        $ResponseObj->SimpleAPICfgs->AllowedRequestContentTypes     = $this->SimpleAPI->getAllowedRequestContentTypes();
+        $ResponseObj->SimpleAPICfgs->CacheDuration                  = $this->SimpleAPI->getCacheDuration();
+        $ResponseObj->SimpleAPICfgs->CacheFolderName                = $this->SimpleAPI->getCacheFolderName();
+        $ResponseObj->SimpleAPICfgs->DefaultResponseContentType     = $this->SimpleAPI->getDefaultResponseContentType();
+        $ResponseObj->SimpleAPICfgs->RelaxForTextTypeRequests       = $this->SimpleAPI->getRelaxForTextTypeRequests();
+        $ResponseObj->SimpleAPICfgs->EnforceAjaxRequests            = $this->SimpleAPI->getForceAjaxRequest();
+        $ResponseObj->SimpleAPICurrentVersion                       = SimpleAPI::VERSION; 
+
+        $GithubReleasesAPI = "https://api.github.com/repos/JohnRDOrazio/SimpleAPI/releases/latest";
+        $ch = curl_init();
+        curl_setopt( $ch, CURLOPT_URL, $GithubReleasesAPI );
+        curl_setopt( $ch, CURLOPT_USERAGENT, $repoName );
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+        $latestReleaseJSON = curl_exec( $ch );
+        curl_close( $ch );
+        $latestReleaseJSON = json_decode( $latestReleaseJSON );
+        $ResponseObj->SimpleAPILatestVersion                = str_replace( 'v', '', $latestReleaseJSON->tag_name );
 
         //This object will be transformed into the JSON or XML or ICS response, or whatever response type was requested
         //here you may define your own cases to handle each response type supported by your API
