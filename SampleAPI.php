@@ -121,7 +121,7 @@ class SampleAPI {
         $GithubReleasesAPI = "https://api.github.com/repos/JohnRDOrazio/SimpleAPI/releases/latest";
         $ch = curl_init();
         curl_setopt( $ch, CURLOPT_URL, $GithubReleasesAPI );
-        curl_setopt( $ch, CURLOPT_USERAGENT, $repoName );
+        curl_setopt( $ch, CURLOPT_USERAGENT, 'JohnRDOrazio/SimpleAPI' );
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
         $latestReleaseJSON = curl_exec( $ch );
         curl_close( $ch );
