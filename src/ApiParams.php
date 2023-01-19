@@ -2,10 +2,9 @@
 
 namespace JohnRDOrazio\SimpleAPI;
 
-if( class_exists("\Composer\Autoload\ClassLoader") )
-{
-    use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
-} else {
+use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
+
+if( false === class_exists("\Composer\Autoload\ClassLoader") ) {
     // composer autoload.php has not been included/required
     include_once( 'Enums/ResponseType.php' );
 }

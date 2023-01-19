@@ -3,18 +3,20 @@
 //you may rename the namespace according to your own implementation
 namespace JohnRDOrazio\SampleAPI;
 
+use JohnRDOrazio\SimpleAPI;
+use JohnRDOrazio\SimpleAPI\ApiParams;
+
+//you may include any tranforms you may need, based on your supported response content types
+use JohnRDOrazio\SimpleAPI\Transforms\XmlTransform;
+use JohnRDOrazio\SimpleAPI\Transforms\IcsTransform;
+
 //if not using composer to autoload the SimpleAPI class,
-//comment out the following two lines and uncomment the require_once lines
-//use JohnRDOrazio\SimpleAPI;
-//use JohnRDOrazio\SimpleAPI\ApiParams;
+//uncomment the following two lines
 require_once( 'src/SimpleAPI.php' );
 require_once( "src/ApiParams.php" );
 
-//you may include any tranforms you may need, based on your supported response content types
-//again, if not using composer to autoload the SimpleAPI class,
-//comment out the following two lines and uncomment the require_once lines
-//use JohnRDOrazio\SimpleAPI\Transforms\XmlTransform;
-//use JohnRDOrazio\SimpleAPI\Transforms\IcsTransform;
+//again for the transforms, if not using composer to autoload the SimpleAPI class,
+//uncomment the following two lines
 require_once( "src/Transforms/XmlTransform.php" );
 require_once( "src/Transforms/IcsTransform.php" );
 
