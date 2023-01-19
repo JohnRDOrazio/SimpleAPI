@@ -1,10 +1,13 @@
 <?php
+
+namespace JohnRDOrazio\SimpleAPI\Enums;
+
 /**
  * enum RequestContentType
  * Represents all possible Content Types
  * for a Request that the API might receive
  */
- 
+
 class RequestContentType {
     const JSON      = "application/json";
     const FORMDATA  = "application/x-www-form-urlencoded";

@@ -1,8 +1,18 @@
 <?php
 
-include_once( 'enums/ResponseType.php' );
+namespace JohnRDOrazio\SimpleAPI;
 
-class APIParams {
+if( class_exists("\Composer\Autoload\ClassLoader") )
+{
+    use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
+} else {
+    // composer autoload.php has not been included/required
+    include_once( 'Enums/ResponseType.php' );
+}
+
+
+
+class ApiParams {
     //define a public class property for each of your supported API parameters
     //and define here any default values that might be used/returned if the parameters are not set in the request
     public ?string $Param1      = null;

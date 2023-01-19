@@ -1,5 +1,15 @@
 <?php
 
+namespace JohnRDOrazio\SimpleAPI\Enums;
+
+/**
+ * enum AcceptHeader
+ * Represents all possible Accept Headers
+ * that the API might receive from a Request
+ * and define the corresponding Content Type for the Response
+ * and the corresponding file extensions for the cached response files
+ */
+
 class AcceptHeader {
     const ATTACHMENT= "application/octet-stream";
     const JSON      = "application/json";

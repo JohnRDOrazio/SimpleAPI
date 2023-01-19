@@ -1,4 +1,23 @@
 <?php
+
+//you may rename the namespace according to your own implementation
+namespace JohnRDOrazio\SampleAPI;
+
+//if not using composer to autoload the SimpleAPI class,
+//comment out the following two lines and uncomment the require_once lines
+use JohnRDOrazio\SimpleAPI;
+use JohnRDOrazio\SimpleAPI\ApiParams;
+//require_once( 'src/SimpleAPI.php' );
+//require_once( "src/ApiParams.php" );
+
+//you may include any tranforms you may need, based on your supported response content types
+//again, if not using composer to autoload the SimpleAPI class,
+//comment out the following two lines and uncomment the require_once lines
+use JohnRDOrazio\SimpleAPI\Transforms\XmlTransform;
+use JohnRDOrazio\SimpleAPI\Transforms\IcsTransform;
+//require_once( "src/Transforms/XmlTransform.php" );
+//require_once( "src/Transforms/IcsTransform.php" );
+
 /**
  * This is an example implementation of the SimpleAPI class,
  *   to build your own API
@@ -9,7 +28,7 @@
  *   these should be taken care of by your own API implementation here
  * The SimpleAPI is transparent when it comes to accepted parameters:
  *   your API implementation should define the accepted parameters,
- *   we have included an APIParams class to assist with this
+ *   we have included an ApiParams class to assist with this
  * The Github Repo user and name are useful for things like ICAL output...
  *   You may not therefore need these, but you may find it useful for other purposes.
 */
@@ -18,17 +37,10 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once( 'src/SimpleAPI.php' );
-require_once( "src/includes/APIParams.php" );
-
-//include any tranforms you may need, based on your supported response content types
-require_once( "src/includes/transforms/XmlTransform.php" );
-require_once( "src/includes/transforms/IcsTransform.php" );
-
 class SampleAPI {
     const API_VERSION                               = '0.1';
     private SimpleAPI $SimpleAPI;
-    private APIParams $APIParams;
+    private ApiParams $ApiParams;
 
     private array $responseData                     = [];
 
@@ -47,15 +59,15 @@ class SampleAPI {
                 header( $_SERVER[ "SERVER_PROTOCOL" ]." 400 Bad Request", true, 400 );
                 die( '{"error":"Malformed JSON data received in the request: <' . $json . '>, ' . json_last_error_msg() . '"}' );
             } else {
-                $this->APIParams = new APIParams( $data );
+                $this->ApiParams = new ApiParams( $data );
             }
         } else {
             switch( $this->SimpleAPI->getRequestMethod() ) {
                 case RequestMethod::POST:
-                    $this->APIParams = new APIParams( $_POST );
+                    $this->ApiParams = new ApiParams( $_POST );
                     break;
                 case RequestMethod::GET:
-                    $this->APIParams = new APIParams( $_GET );
+                    $this->ApiParams = new ApiParams( $_GET );
                     break;
                 case RequestMethod::OPTIONS:
                     //continue
@@ -68,11 +80,11 @@ class SampleAPI {
                     die( $errorMessage );
             }
         }
-        if( $this->APIParams->ResponseType !== null ) {
-            $this->SimpleAPI->validateResponseTypeParam( $this->APIParams->ResponseType );
+        if( $this->ApiParams->ResponseType !== null ) {
+            $this->SimpleAPI->validateResponseTypeParam( $this->ApiParams->ResponseType );
         } else {
             $responseType = $this->SimpleAPI->getResponseTypeFromResponseContentType();
-            $this->APIParams->setResponseType( $responseType );
+            $this->ApiParams->setResponseType( $responseType );
         }
     }
 
@@ -86,10 +98,10 @@ class SampleAPI {
 
         //For example, if we want to echo back the parameters received in the request,
         //or the params that have been elaborated throughout the script in any case,
-        //we can put them in an APIParams property
-        $ResponseObj->APIParams = new stdClass();
-        foreach( $this->APIParams as $key => $value ) {
-            $ResponseObj->APIParams->{$key} = $value;
+        //we can put them in an ApiParams property
+        $ResponseObj->ApiParams = new stdClass();
+        foreach( $this->ApiParams as $key => $value ) {
+            $ResponseObj->ApiParams->{$key} = $value;
         }
 
         //We can put the main response data calculated by our API
@@ -100,7 +112,7 @@ class SampleAPI {
         //We can let the client know that it is actually receiving a response
         //from the version of the API that it was expecting
         $ResponseObj->ApiVersion                    = self::API_VERSION;
-        $ResponseObj->ResponseType                  = $this->APIParams->ResponseType;
+        $ResponseObj->ResponseType                  = $this->ApiParams->ResponseType;
         $ResponseObj->ResponseContentType           = $this->SimpleAPI->getResponseContentType();
         $ResponseObj->RequestContentType            = $this->SimpleAPI->getRequestContentType();
         $ResponseObj->CacheFile                     = $this->SimpleAPI->getCacheFile();
@@ -145,7 +157,7 @@ class SampleAPI {
 
         //This object will be transformed into the JSON or XML or ICS response, or whatever response type was requested
         //here you may define your own cases to handle each response type supported by your API
-        switch ( $this->APIParams->ResponseType ) {
+        switch ( $this->ApiParams->ResponseType ) {
             case ResponseType::JSON:
                 //if a JSON resource was requested, we transform our response to JSON
                 $response = json_encode( $ResponseObj );
@@ -200,19 +212,19 @@ class SampleAPI {
         //we wait until parameters are loaded, just in case a parameter determines the response content type
         $this->SimpleAPI->setResponseContentTypeHeader();
 
-        //if you need to intervene setting further APIParams based on parameters, etc.,
-        //you should do so HERE, since any cache files will be determined based on APIParams
+        //if you need to intervene setting further ApiParams based on parameters, etc.,
+        //you should do so HERE, since any cache files will be determined based on ApiParams
 
-        $responseContents = $this->SimpleAPI->getCacheFileIfAvailable( $this->APIParams, self::API_VERSION );
+        $responseContents = $this->SimpleAPI->getCacheFileIfAvailable( $this->ApiParams, self::API_VERSION );
         if( null === $responseContents ) {
             //This is where the main calculations of your API take place
             //For example you can populate the $this->responseData array with the API results
 
             //Here is an example that populates the responseData array
-            //with the string in APIParams->Param1 for as many times
-            //as indicated by APIParams->Param2 
-            for( $i = 0; $i < $this->APIParams->Param2; $i++ ) {
-                $this->responseData[] = $this->APIParams->Param1;
+            //with the string in ApiParams->Param1 for as many times
+            //as indicated by ApiParams->Param2 
+            for( $i = 0; $i < $this->ApiParams->Param2; $i++ ) {
+                $this->responseData[] = $this->ApiParams->Param1;
             }
 
             //once your response is ready, we can do any last elaboration to the final output

@@ -1,7 +1,9 @@
 <?php
 
+namespace JohnRDOrazio\SimpleAPI\Enums;
+
 /**
- * class ResponseType
+ * enum ResponseType
  * Represents possible Content Types for the Response
  *  as indicated in the request's Accept header
  *  (or possibly in a request parameter)

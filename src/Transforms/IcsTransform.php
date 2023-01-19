@@ -1,5 +1,7 @@
 <?php
 
+namespace JohnRDOrazio\SimpleAPI\Transforms;
+
 class IcsTransform {
 
     const GITHUB_REPO = [

@@ -1,5 +1,12 @@
 <?php
 
+namespace JohnRDOrazio\SimpleAPI\Enums;
+
+/**
+ * enum CacheDuration
+ * Helps define / configure the duration for cached responses
+ */
+
 class CacheDuration {
     const MINUTE    = "MINUTE";
     const HOUR      = "HOUR";

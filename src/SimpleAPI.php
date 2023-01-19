@@ -1,11 +1,24 @@
 <?php
 
-require_once( "includes/enums/AcceptHeader.php" );
-require_once( "includes/enums/RequestMethod.php" );
-require_once( "includes/enums/RequestContentType.php" );
-require_once( "includes/enums/ResponseType.php" );
-require_once( "includes/enums/CacheDuration.php" );
-require_once( "includes/SimpleAPICfg.php" );
+namespace JohnRDOrazio\SimpleAPI;
+
+if( class_exists("\Composer\Autoload\ClassLoader") )
+{
+    use JohnRDOrazio\SimpleAPI\Enums\AcceptHeader;
+    use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
+    use JohnRDOrazio\SimpleAPI\Enums\RequestContentType;
+    use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
+    use JohnRDOrazio\SimpleAPI\Enums\CacheDuration;
+    use JohnRDOrazio\SimpleAPI\Config;
+} else {
+    // composer autoload.php has not been included/required
+    require_once( "Enums/AcceptHeader.php" );
+    require_once( "Enums/RequestMethod.php" );
+    require_once( "Enums/RequestContentType.php" );
+    require_once( "Enums/ResponseType.php" );
+    require_once( "Enums/CacheDuration.php" );
+    require_once( "Config.php" );
+}
 
 class SimpleAPI {
 
@@ -25,7 +38,8 @@ class SimpleAPI {
     private ?string $CacheFilePath                  = null;
     const VERSION                                   = '0.1.1';
 
-    public function __construct(){
+    public function __construct() {
+        Config::LoadConfigs();
         $this->AllowedOrigins                   = ALLOWED_ORIGINS;
         $this->AllowedReferers                  = ALLOWED_REFERERS;
         $this->AllowedAcceptHeaders             = ALLOWED_ACCEPT_HEADERS;

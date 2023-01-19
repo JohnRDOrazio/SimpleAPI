@@ -1,4 +1,7 @@
 <?php
+
+namespace JohnRDOrazio\SimpleAPI\Enums;
+
 /**
  * enum RequestMethod
  * Represents all possible Request Methods

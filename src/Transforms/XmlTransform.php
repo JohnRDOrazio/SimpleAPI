@@ -1,7 +1,8 @@
 <?php
 
-class XmlTransform {
+namespace JohnRDOrazio\SimpleAPI\Transforms;
 
+class XmlTransform {
 
     public static function Array2XML(array $data, ?SimpleXMLElement &$xml) : void {
         foreach( $data as $key => $value ) {
