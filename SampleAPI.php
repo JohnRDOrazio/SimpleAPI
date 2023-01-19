@@ -5,18 +5,18 @@ namespace JohnRDOrazio\SampleAPI;
 
 //if not using composer to autoload the SimpleAPI class,
 //comment out the following two lines and uncomment the require_once lines
-use JohnRDOrazio\SimpleAPI;
-use JohnRDOrazio\SimpleAPI\ApiParams;
-//require_once( 'src/SimpleAPI.php' );
-//require_once( "src/ApiParams.php" );
+//use JohnRDOrazio\SimpleAPI;
+//use JohnRDOrazio\SimpleAPI\ApiParams;
+require_once( 'src/SimpleAPI.php' );
+require_once( "src/ApiParams.php" );
 
 //you may include any tranforms you may need, based on your supported response content types
 //again, if not using composer to autoload the SimpleAPI class,
 //comment out the following two lines and uncomment the require_once lines
-use JohnRDOrazio\SimpleAPI\Transforms\XmlTransform;
-use JohnRDOrazio\SimpleAPI\Transforms\IcsTransform;
-//require_once( "src/Transforms/XmlTransform.php" );
-//require_once( "src/Transforms/IcsTransform.php" );
+//use JohnRDOrazio\SimpleAPI\Transforms\XmlTransform;
+//use JohnRDOrazio\SimpleAPI\Transforms\IcsTransform;
+require_once( "src/Transforms/XmlTransform.php" );
+require_once( "src/Transforms/IcsTransform.php" );
 
 /**
  * This is an example implementation of the SimpleAPI class,
