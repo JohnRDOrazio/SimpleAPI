@@ -1,11 +1,11 @@
 <?php
 
-require_once( "enums/AcceptHeader.php" );
-require_once( "enums/RequestMethod.php" );
-require_once( "enums/RequestContentType.php" );
-require_once( "enums/ResponseType.php" );
-require_once( "enums/CacheDuration.php" );
-require_once( "SimpleAPICfg.php" );
+require_once( "includes/enums/AcceptHeader.php" );
+require_once( "includes/enums/RequestMethod.php" );
+require_once( "includes/enums/RequestContentType.php" );
+require_once( "includes/enums/ResponseType.php" );
+require_once( "includes/enums/CacheDuration.php" );
+require_once( "includes/SimpleAPICfg.php" );
 
 class SimpleAPI {
 
