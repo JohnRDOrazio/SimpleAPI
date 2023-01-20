@@ -53,3 +53,70 @@ seeing that it makes use of typed properties in order to have consistency throug
 
 The **SimpleAPI** defines faux `enum`s using simple classes, so as not to require PHP 8.1;
 in the future it may implement true enums requiring a minimum PHP version of 8.1.
+
+## Create your API implementation in 3 steps ##
+Here are a few simple steps to get you started in creating your own API:
+
+1) Create your API folder and require the SimpleAPI package
+   > *This step takes for granted that you have `composer` already installed in your system.*
+   ```console
+   mkdir MyApi
+   cd MyApi
+   composer require johnrdorazio/simpleapi
+   ```
+   
+2) Create your own API definition
+   On a Linux system:
+   ```console
+   touch MyApi.php
+   touch config.php
+   ```
+   
+   On a Windows system:
+   ```console
+   copy nul MyApi.php
+   copy nul config.php
+   ```
+   
+   Paste the contents of [SampleAPI.php](SampleAPI.php) into `MyApi.php` and adapt to your needs (changing the class name for startes),
+   or simply write from scratch your own API implementation using the `SimpleAPI` package:
+   ```php
+   <?php
+   use JohnRDOrazio\SimpleAPI\SimpleAPI;
+   use JohnRDOrazio\SimpleAPI\ApiParams;
+   use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
+   use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
+   use JohnRDOrazio\SimpleAPI\Enums\RequestContentType;
+   
+   require __DIR__ . '/vendor/autoload.php';
+   
+   class MyApi {
+   }
+   ```
+   
+   Similarly paste the contents of [config.sample.php](config.sample.php) into `config.php` and adapt to your needs.
+   
+   Define your API parameters, if any
+   *TODO: A few sample parameters are currently hardcoded into the `SimpleAPI` in `src/ApiParams.php`, see issue #8 *
+   
+3) Create your endpoint:
+   *on a Linux system*
+   ```console
+   touch endpoint.php
+   ```
+   *on a Windows system*
+   ```console
+   copy nul endpoint.php
+   ```
+   
+   Include your API definition into your endpoint, for example:
+   ```php
+   <?php
+   
+   include_once( 'MyApi.php' );
+   
+   $MyApi = new MyApi();
+   $MyApi->Init();
+   ```
+   
+   Now when you access `localhost/MyApi/endpoint.php` (or wherever you are hosting your API folder), you should get your first response!
