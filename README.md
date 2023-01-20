@@ -66,6 +66,7 @@ Here are a few simple steps to get you started in creating your own API:
    ```
    
 2) Create your own API definition
+   
    On a Linux system:
    ```console
    touch MyApi.php
@@ -100,10 +101,12 @@ Here are a few simple steps to get you started in creating your own API:
    *TODO: A few sample parameters are currently hardcoded into the `SimpleAPI` in `src/ApiParams.php`, see issue #8 *
    
 3) Create your endpoint:
+   
    *on a Linux system*
    ```console
    touch endpoint.php
    ```
+   
    *on a Windows system*
    ```console
    copy nul endpoint.php
