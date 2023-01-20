@@ -79,7 +79,7 @@ Here are a few simple steps to get you started in creating your own API:
    copy nul config.php
    ```
    
-   Paste the contents of [SampleAPI.php](SampleAPI.php) into `MyApi.php` and adapt to your needs (changing the class name for startes),
+   Paste the contents of [SampleAPI.php](SampleAPI.php) into `MyApi.php` and adapt to your needs (changing the class name for starters),
    or simply write from scratch your own API implementation using the `SimpleAPI` package:
    ```php
    <?php
@@ -98,7 +98,7 @@ Here are a few simple steps to get you started in creating your own API:
    Similarly paste the contents of [config.sample.php](config.sample.php) into `config.php` and adapt to your needs.
    
    Define your API parameters, if any
-   *TODO: A few sample parameters are currently hardcoded into the `SimpleAPI` in `src/ApiParams.php`, see issue #8 *
+   > *TODO: A few sample parameters are currently hardcoded into the `SimpleAPI` in `src/ApiParams.php`, needs to be extendible see issue #8 *
    
 3) Create your endpoint:
    
