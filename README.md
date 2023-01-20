@@ -13,7 +13,7 @@ It aims to be extensible so as to cater to various use cases, and to various kin
 The SimpleAPI does not create or handle routes (for now at least). This should be handled by your own API implementation.
 
 The SimpleAPI does not handle internationalization or localization of your response:
-this should be handled by your own API implementation, using the included SampleAPI middleware.
+this should be handled by your own API implementation, an example of which is provided in the SampleAPI class (`SampleAPI.php`).
 
 The SimpleAPI does not create any kind of client implementation of the API.
 It simply helps you jumpstart your API, to handle requests from clients and produce responses.
