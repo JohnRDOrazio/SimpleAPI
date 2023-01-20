@@ -98,7 +98,9 @@ Here are a few simple steps to get you started in creating your own API:
    Similarly paste the contents of [config.sample.php](config.sample.php) into `config.php` and adapt to your needs.
    
    Define your API parameters, if any
-   > *TODO: A few sample parameters are currently hardcoded into the `SimpleAPI` in `src/ApiParams.php`, needs to be extendible see issue #8 *
+   > *TODO: A few sample parameters are currently hardcoded into the `SimpleAPI` in `src/ApiParams.php`, needs to be extendible*
+   
+   (see issue #8)
    
 3) Create your endpoint:
    
