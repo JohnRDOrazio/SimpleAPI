@@ -34,8 +34,10 @@ class Config {
         "GITHUB_REPO_USER"              => "JohnRDOrazio",
         "GITHUB_REPO_NAME"              => "SimpleAPI",
         "XML_PARENT_ELEMENT"            => "SampleAPI",
+        "XML_NAMESPACE"                 => "https://myapidomain.com/SimpleAPI",
         "CALENDAR_DEFAULT_TIMEZONE"     => "Europe/Vatican",
         "CALENDAR_DEFAULT_LANGUAGE"     => "en-us",
+        "CALENDAR_NAME"                 => "SimpleAPI Calendar"
     ];
 
     /**
@@ -44,7 +46,7 @@ class Config {
      * Searches for the user's configuration file up to three levels
      */
 
-    public static function LoadUserConfiguration() {
+    private static function LoadUserConfiguration() {
         if( file_exists( 'config.php' ) ) {
             require_once( "config.php" );
         }
@@ -57,7 +59,7 @@ class Config {
         else if (
             ( file_exists( 'config.sample.php' ) || file_exists( '../config.sample.php' ) || file_exists( '../../config.sample.php' ) )
             &&
-            ( !file_exists( 'config.php' ) || !file_exists( '../config.php' ) || !file_exists( '../../config.php' ) )
+            ( !file_exists( 'config.php' ) && !file_exists( '../config.php' ) && !file_exists( '../../config.php' ) )
           ) {
             header( "Content-Type: text/html; charset=utf-8" );
             $html = '<h3>Welcome to SimpleAPI!</h3>';
@@ -73,11 +75,9 @@ class Config {
      * Makes sure that every constant needed gets set,
      * even if not set in the user's config file
      */
-    private static function LoadConfigs() {
+    public static function LoadConfigs() {
 
         Config::LoadUserConfiguration();
-        Config::DEFAULTS["XML_NAMESPACE"] = "https://myapidomain.com/" . Config::DEFAULTS["GITHUB_REPO_NAME"];
-        Config::DEFAULTS["CALENDAR_NAME"] = Config::DEFAULTS["GITHUB_REPO_NAME"] . " Calendar";
 
         foreach( Config::DEFAULTS as $key => $value ) {
             if(!defined($key) ) {

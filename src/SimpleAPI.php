@@ -3,8 +3,6 @@
 namespace JohnRDOrazio\SimpleAPI;
 
 use JohnRDOrazio\SimpleAPI\Enums\AcceptHeader;
-//use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
-//use JohnRDOrazio\SimpleAPI\Enums\RequestContentType;
 use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
 use JohnRDOrazio\SimpleAPI\Enums\CacheDuration;
 use JohnRDOrazio\SimpleAPI\Config;

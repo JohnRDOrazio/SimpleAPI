@@ -12,10 +12,8 @@ use JohnRDOrazio\SimpleAPI\Transforms\IcsTransform;
 
 //Use composer autoload if SimpleAPI was installed via composer
 if( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-    echo 'autoloader file exists!' . PHP_EOL;
     require __DIR__ . '/vendor/autoload.php';
 } else { //if( !class_exists("\Composer\Autoload\ClassLoader") )
-    echo 'composer autoloader not found, attempting to bootstrap manually...' . PHP_EOL;
     spl_autoload_register( 'SampleAPI::autoload' );
 }
 
