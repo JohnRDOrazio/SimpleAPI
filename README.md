@@ -80,7 +80,7 @@ Here are a few simple steps to get you started in creating your own API:
    ```
    
    Paste the contents of [SampleAPI.php](SampleAPI.php) into `MyApi.php` and adapt to your needs (changing the class name for starters),
-   or simply write from scratch your own API implementation using the `SimpleAPI` package:
+   or simply write from scratch your own API implementation using the `SimpleAPI` package, defining your API parameters (if any):
    ```php
    <?php
    use JohnRDOrazio\SimpleAPI\SimpleAPI;
@@ -92,6 +92,15 @@ Here are a few simple steps to get you started in creating your own API:
    require __DIR__ . '/vendor/autoload.php';
    
    class MyApi {
+       private SimpleAPI $SimpleAPI;
+       private ApiParams $ApiParams;
+       public function __construct(){
+           $this->SimpleAPI = new SimpleAPI();
+       }
+       
+       public function Init(){
+           $this->SimpleAPI->Init();
+       }    
    }
    ```
    
