@@ -244,7 +244,6 @@ class SampleAPI {
         // does the class use the namespace prefix?
         $len = strlen($prefix);
         if (strncmp($prefix, $class, $len) !== 0) {
-            echo "class " . $class . " does not seem to fit the description ($prefix)" . PHP_EOL;
             // no, move to the next registered autoloader
             return;
         }
@@ -256,13 +255,9 @@ class SampleAPI {
         // separators with directory separators in the relative class name, append
         // with .php
         $file = $baseDir.str_replace('\\', '/', $relativeClass).'.php';
-        echo "relativeClass = " . $relativeClass . PHP_EOL;
-        echo "file = " . $file . PHP_EOL;
         // if the file exists, require it
         if (file_exists($file)) {
             require_once $file;
-        } else {
-            echo "file $file does not seem to exist...";
         }
     }
 
