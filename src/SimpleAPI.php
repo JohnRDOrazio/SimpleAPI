@@ -121,8 +121,8 @@ class SimpleAPI {
     }
 
     public function setResponseContentTypeHeader() : void {
-        header( 'Cache-Control: must-revalidate, max-age=259200' ); //cache for 1 month
-        header( "Content-Type: {$this->ResponseContentType}; charset=utf-8" );
+        header( "Cache-Control: must-revalidate, max-age=" . CacheDuration::toSeconds( CACHE_DURATION ), true );
+        header( "Content-Type: {$this->ResponseContentType}; charset=utf-8", true );
     }
 
     public function getAllowedAcceptHeaders() : array {
@@ -378,6 +378,18 @@ class SimpleAPI {
         return SimpleAPI::$CONFIGURATION_FILE;
     }
 
+    public static function outputResponse( string $responseContents ) {
+        $responseHash = md5( $responseContents );
+        header("Etag: \"{$responseHash}\"");
+        if (!empty( $_SERVER['HTTP_IF_NONE_MATCH'] ) && $_SERVER['HTTP_IF_NONE_MATCH'] === $responseHash) {
+            header( $_SERVER[ "SERVER_PROTOCOL" ] . " 304 Not Modified" );
+            header('Content-Length: 0');
+        } else {
+            echo $responseContents;
+        }
+        die();
+    }
+
     public function Init() {
         $this->setAllowedOriginHeader();
         $this->setAccessControlAllowMethods();
@@ -388,6 +400,7 @@ class SimpleAPI {
         }
         $this->enforceReferer();
         $this->setCacheDuration();
+        $this->setResponseContentTypeHeader();
     }
 
 }

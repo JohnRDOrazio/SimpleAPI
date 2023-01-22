@@ -86,6 +86,7 @@ class SampleAPI {
         }
         if( $this->SimpleAPI->getResponseTypeParameterValue() !== null ) {
             $this->SimpleAPI->validateResponseTypeParam( $this->SimpleAPI->getResponseTypeParameterValue() );
+            $this->SimpleAPI->setResponseContentTypeHeader();
         } else {
             $responseType = $this->SimpleAPI->getResponseTypeFromResponseContentType();
             $this->SimpleAPI->setResponseTypeParameterValue( $responseType );
@@ -195,18 +196,6 @@ class SampleAPI {
         return $response;
     }
 
-    private static function outputResponse( string $responseContents ) {
-        $responseHash = md5( $responseContents );
-        header("Etag: \"{$responseHash}\"");
-        if (!empty( $_SERVER['HTTP_IF_NONE_MATCH'] ) && $_SERVER['HTTP_IF_NONE_MATCH'] === $responseHash) {
-            header( $_SERVER[ "SERVER_PROTOCOL" ] . " 304 Not Modified" );
-            header('Content-Length: 0');
-        } else {
-            echo $responseContents;
-        }
-        die();
-    }
-
     /**
      * Your SampleAPI will only work once you call the public Init() method
      */
@@ -220,10 +209,6 @@ class SampleAPI {
         $this->SimpleAPI->defineParameter( 'PARAM_TWO', ParamType::INTEGER );
         $this->SimpleAPI->defineParameter( 'RESPONSETYPE', ParamType::RESPONSETYPE );
         $this->initParameterData();
-
-        //we don't set the response content type header in the SimpleAPI->Init() itself
-        //we wait until parameters are loaded, just in case a parameter determines the response content type
-        $this->SimpleAPI->setResponseContentTypeHeader();
 
         //if you need to intervene setting further ApiParams based on parameters, etc.,
         //you should do so HERE, since any cache files will be determined based on ApiParams
@@ -244,7 +229,7 @@ class SampleAPI {
             //and transform it based on the requested content type
             $responseContents = $this->generateResponse();
         }
-        $this->outputResponse( $responseContents );
+        SimpleAPI::outputResponse( $responseContents );
     }
 
     public static function autoload( $class ) {
