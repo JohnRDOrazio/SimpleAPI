@@ -166,6 +166,7 @@ class SampleAPI {
         $this->SimpleAPI->defineParameter( 'RESPONSETYPE', ParamType::RESPONSETYPE );
 
         //Initialize the SimpleAPI, which will take care of detecting request and setting response headers
+        //This will also initialize any previously defined parameters by filling them with values from the request parameters
         $this->SimpleAPI->Init();
 
         //if you need to intervene setting further ApiParams based on parameters, etc.,
