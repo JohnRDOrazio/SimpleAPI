@@ -32,7 +32,40 @@ class ApiParams {
                 $this->sanitizeAndSetValue( $param, $value );
             } else {
                 header( $_SERVER[ "SERVER_PROTOCOL" ] . " 400 Bad Request", true, 400 );
-                die( "Cannot fulfill this request, parameter {$param} does not seem to be a supported parameter? Supported parameters are: " . array_keys( $this->params ) . print_r( $this->params, true ) );
+                header('Content-Type: text/html', true);
+                $response = "Cannot fulfill this request, parameter {$param} does not seem to be a supported parameter?<br>Supported parameters are: ";
+                $params = array_reduce(array_keys( $this->params ), function( array $carry, string $item ) {
+                    if( $this->params[$item] instanceof StringParameter ) {
+                        $carry[$item] = "$item (string)";
+                    }
+                    else if( $this->params[$item] instanceof IntegerParameter ) {
+                        $carry[$item] = "$item (int)";
+                    }
+                    else if( $this->params[$item] instanceof FloatParameter ) {
+                        $carry[$item] = "$item (float)";
+                    }
+                    else if( $this->params[$item] instanceof BooleanParameter ) {
+                        $carry[$item] = "$item (bool)";
+                    }
+                    else if( $this->params[$item] instanceof NullParameter ) {
+                        $carry[$item] = "$item (null)";
+                    }
+                    else if( $this->params[$item] instanceof ArrayParameter ) {
+                        $carry[$item] = "$item (array)";
+                    }
+                    else if( $this->params[$item] instanceof ObjectParameter ) {
+                        $carry[$item] = "$item (object)";
+                    }
+                    else if( $this->params[$item] instanceof MixedParameter ) {
+                        $carry[$item] = "$item (mixed)";
+                    }
+                    else if( $this->params[$item] instanceof ResponseTypeParameter ) {
+                        $carry[$item] = "$item (enum) [" . implode(', ', ResponseType::$values ) . "]";
+                    }
+                    return $carry;
+                }, []);
+                $response .= "<br> - " . implode('<br> - ', array_values( $params ) );
+                die( $response );
             }
         }
 
@@ -192,7 +225,7 @@ class ApiParams {
     public function getAll() : array {
         return array_reduce(
             array_keys($this->params),
-            function($carry, $key) { $carry[$key] = $this->params[$key]->getValue(); return $carry; },
+            function(array $carry, string $key) { $carry[$key] = $this->params[$key]->getValue(); return $carry; },
             []
         );
     }

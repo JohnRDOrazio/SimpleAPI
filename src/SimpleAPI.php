@@ -106,6 +106,7 @@ class SimpleAPI {
             }
         } else {
             $this->ResponseContentType = $this->DefaultResponseContentType;
+            $this->Params->setResponseType( $this->DefaultResponseContentType );
         }
     }
 
@@ -305,7 +306,7 @@ class SimpleAPI {
     private function determineCacheFile( string $apiVersion = "" ) : ?string {
         $this->CacheFilePath = CACHE_FOLDER_NAME . "/v" . str_replace( ".", "_", $apiVersion );
         if( $this->CacheDuration !== null ) {
-            $cacheFileExtension = $this->Params->getResponseType() !== null ? ResponseType::toFileExt( $this->Params->getResponseType() ) : AcceptHeader::toFileExt( $this->DefaultResponseContentType );
+            $cacheFileExtension = ResponseType::toFileExt( $this->Params->getResponseType() );
             $cacheFileName = md5( serialize( $this->Params ) ) . $this->CacheDuration . "." . $cacheFileExtension;
             return $this->CacheFilePath . "/" . $cacheFileName;
         }
