@@ -68,7 +68,6 @@ class Config {
             $html .= '<p>You may use the included <b><i>config.sample.php</i></b> to start with.</p>';
             die( $html );
         }
-
     }
 
     /** 
@@ -81,8 +80,8 @@ class Config {
         Config::LoadUserConfiguration();
 
         foreach( Config::DEFAULTS as $key => $value ) {
-            if(!defined($key) ) {
-                define( $key, $value );
+            if(!defined( __NAMESPACE__ . '\\' . $key) ) {
+                define( __NAMESPACE__ . '\\' . $key, $value );
             }
         }
 
