@@ -408,6 +408,47 @@ class SimpleAPI {
         die();
     }
 
+    private function initParameterData(): void {
+        if ( $this->getRequestContentType() === RequestContentType::JSON ) {
+            $json = file_get_contents( 'php://input' );
+            $data = json_decode( $json, true );
+            if( NULL === $json || "" === $json ){
+                header( $_SERVER[ "SERVER_PROTOCOL" ]." 400 Bad Request", true, 400 );
+                die( '{"error":"No JSON data received in the request: <' . $json . '>"' );
+            } else if ( json_last_error() !== JSON_ERROR_NONE ) {
+                header( $_SERVER[ "SERVER_PROTOCOL" ]." 400 Bad Request", true, 400 );
+                die( '{"error":"Malformed JSON data received in the request: <' . $json . '>, ' . json_last_error_msg() . '"}' );
+            } else {
+                $this->setParameterValues( $data );
+            }
+        } else {
+            switch( $this->getRequestMethod() ) {
+                case RequestMethod::POST:
+                    $this->setParameterValues( $_POST );
+                    break;
+                case RequestMethod::GET:
+                    $this->setParameterValues( $_GET );
+                    break;
+                case RequestMethod::OPTIONS:
+                    //continue
+                    break;
+                default:
+                    header( $_SERVER[ "SERVER_PROTOCOL" ]." 405 Method Not Allowed", true, 405 );
+                    $errorMessage = '{"error":"You seem to be forming a strange kind of request? Allowed Request Methods are ';
+                    $errorMessage .= implode( ' and ', $this->getAllowedRequestMethods() );
+                    $errorMessage .= ', but your Request Method was ' . $this->getRequestMethod() . '"}';
+                    die( $errorMessage );
+            }
+        }
+        if( $this->getResponseTypeParameterValue() !== null ) {
+            $this->validateResponseTypeParam( $this->getResponseTypeParameterValue() );
+            $this->setResponseContentTypeHeader();
+        } else {
+            $responseType = $this->getResponseTypeFromResponseContentType();
+            $this->setResponseTypeParameterValue( $responseType );
+        }
+    }
+
     public function Init() {
         $this->setAllowedOriginHeader();
         $this->setAccessControlAllowMethods();
@@ -419,6 +460,9 @@ class SimpleAPI {
         $this->enforceReferer();
         $this->setCacheDuration();
         $this->setResponseContentTypeHeader();
+        if( $this->Params->areDefined() ) {
+            $this->initParameterData();
+        }
     }
 
 }

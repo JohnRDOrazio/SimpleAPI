@@ -52,48 +52,6 @@ class SampleAPI {
         $this->SimpleAPI                            = new SimpleAPI();
     }
 
-    private function initParameterData(): void {
-        if ( $this->SimpleAPI->getRequestContentType() === RequestContentType::JSON ) {
-            $json = file_get_contents( 'php://input' );
-            $data = json_decode( $json, true );
-            if( NULL === $json || "" === $json ){
-                header( $_SERVER[ "SERVER_PROTOCOL" ]." 400 Bad Request", true, 400 );
-                die( '{"error":"No JSON data received in the request: <' . $json . '>"' );
-            } else if ( json_last_error() !== JSON_ERROR_NONE ) {
-                header( $_SERVER[ "SERVER_PROTOCOL" ]." 400 Bad Request", true, 400 );
-                die( '{"error":"Malformed JSON data received in the request: <' . $json . '>, ' . json_last_error_msg() . '"}' );
-            } else {
-                $this->SimpleAPI->setParameterValues( $data );
-            }
-        } else {
-            switch( $this->SimpleAPI->getRequestMethod() ) {
-                case RequestMethod::POST:
-                    $this->SimpleAPI->setParameterValues( $_POST );
-                    break;
-                case RequestMethod::GET:
-                    $this->SimpleAPI->setParameterValues( $_GET );
-                    break;
-                case RequestMethod::OPTIONS:
-                    //continue
-                    break;
-                default:
-                    header( $_SERVER[ "SERVER_PROTOCOL" ]." 405 Method Not Allowed", true, 405 );
-                    $errorMessage = '{"error":"You seem to be forming a strange kind of request? Allowed Request Methods are ';
-                    $errorMessage .= implode( ' and ', $this->SimpleAPI->getAllowedRequestMethods() );
-                    $errorMessage .= ', but your Request Method was ' . $this->SimpleAPI->getRequestMethod() . '"}';
-                    die( $errorMessage );
-            }
-        }
-        if( $this->SimpleAPI->getResponseTypeParameterValue() !== null ) {
-            $this->SimpleAPI->validateResponseTypeParam( $this->SimpleAPI->getResponseTypeParameterValue() );
-            $this->SimpleAPI->setResponseContentTypeHeader();
-        } else {
-            $responseType = $this->SimpleAPI->getResponseTypeFromResponseContentType();
-            $this->SimpleAPI->setResponseTypeParameterValue( $responseType );
-        }
-    }
-
-
     private function generateResponse() : string|bool {
         $response               = '';
         $ResponseObj            = new stdClass();
@@ -201,14 +159,14 @@ class SampleAPI {
      */
     public function Init() {
 
-        //Initialize the SimpleAPI, which will take care of detecting request and setting response headers
-        $this->SimpleAPI->Init();
-
-        //define your API's accepted parameters and expected type (defining parameters is optional: you might not have any parameters...)
+        //If your API will support parameters, you must define the accepted parameters along with the expected types
+        //  BEFORE you call $this->SimpleAPI->Init()!
         $this->SimpleAPI->defineParameter( 'PARAM_ONE', ParamType::STRING );
         $this->SimpleAPI->defineParameter( 'PARAM_TWO', ParamType::INTEGER );
         $this->SimpleAPI->defineParameter( 'RESPONSETYPE', ParamType::RESPONSETYPE );
-        $this->initParameterData();
+
+        //Initialize the SimpleAPI, which will take care of detecting request and setting response headers
+        $this->SimpleAPI->Init();
 
         //if you need to intervene setting further ApiParams based on parameters, etc.,
         //you should do so HERE, since any cache files will be determined based on ApiParams

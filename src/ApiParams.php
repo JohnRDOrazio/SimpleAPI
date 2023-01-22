@@ -229,4 +229,8 @@ class ApiParams {
             []
         );
     }
+
+    public function areDefined(): bool {
+        return false === empty( array_keys($this->params) );
+    }
 }
