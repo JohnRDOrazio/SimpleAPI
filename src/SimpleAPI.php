@@ -2,7 +2,6 @@
 
 namespace JohnRDOrazio\SimpleAPI;
 
-use ErrorException;
 use JohnRDOrazio\SimpleAPI\Enums\AcceptHeader;
 use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
 use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
