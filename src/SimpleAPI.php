@@ -13,7 +13,7 @@ use JohnRDOrazio\SimpleAPI\Enums\RequestContentType;
 
 class SimpleAPI {
 
-    const VERSION                                   = '0.1.2';
+    const VERSION                                   = '0.1.3';
     private static ?string $CONFIGURATION_FILE = null;
     private array $AllowedOrigins;
     private array $AllowedReferers;
