@@ -1,7 +1,6 @@
 <?php
 
 use JohnRDOrazio\SimpleAPI\SimpleAPI;
-use JohnRDOrazio\SimpleAPI\ApiParams;
 use JohnRDOrazio\SimpleAPI\Enums\ParamType;
 use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
 use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
@@ -41,13 +40,11 @@ error_reporting(E_ALL);
 class SampleAPI {
     const API_VERSION                               = '0.1';
     private SimpleAPI $SimpleAPI;
-    private ApiParams $ApiParams;
 
     private array $responseData                     = [];
 
     public function __construct(){
         $this->SimpleAPI                            = new SimpleAPI();
-        $this->ApiParams                            = new ApiParams();
     }
 
     private function initParameterData() {
@@ -61,15 +58,15 @@ class SampleAPI {
                 header( $_SERVER[ "SERVER_PROTOCOL" ]." 400 Bad Request", true, 400 );
                 die( '{"error":"Malformed JSON data received in the request: <' . $json . '>, ' . json_last_error_msg() . '"}' );
             } else {
-                $this->ApiParams->setValues( $data );
+                $this->SimpleAPI->Params->setValues( $data );
             }
         } else {
             switch( $this->SimpleAPI->getRequestMethod() ) {
                 case RequestMethod::POST:
-                    $this->ApiParams->setValues( $_POST );
+                    $this->SimpleAPI->Params->setValues( $_POST );
                     break;
                 case RequestMethod::GET:
-                    $this->ApiParams->setValues( $_GET );
+                    $this->SimpleAPI->Params->setValues( $_GET );
                     break;
                 case RequestMethod::OPTIONS:
                     //continue
@@ -82,11 +79,11 @@ class SampleAPI {
                     die( $errorMessage );
             }
         }
-        if( $this->ApiParams->getResponseType() !== null ) {
-            $this->SimpleAPI->validateResponseTypeParam( $this->ApiParams->getResponseType() );
+        if( $this->SimpleAPI->Params->getResponseType() !== null ) {
+            $this->SimpleAPI->validateResponseTypeParam( $this->SimpleAPI->Params->getResponseType() );
         } else {
             $responseType = $this->SimpleAPI->getResponseTypeFromResponseContentType();
-            $this->ApiParams->setResponseType( $responseType );
+            $this->SimpleAPI->Params->setResponseType( $responseType );
         }
     }
 
@@ -102,7 +99,7 @@ class SampleAPI {
         //or the params that have been elaborated throughout the script in any case,
         //we can put them in an ApiParams property
         $ResponseObj->ApiParams = new stdClass();
-        foreach( $this->ApiParams->getAll() as $key => $value ) {
+        foreach( $this->SimpleAPI->Params->getAll() as $key => $value ) {
             $ResponseObj->ApiParams->{$key} = $value;
         }
 
@@ -114,7 +111,7 @@ class SampleAPI {
         //We can let the client know that it is actually receiving a response
         //from the version of the API that it was expecting
         $ResponseObj->ApiVersion                    = self::API_VERSION;
-        $ResponseObj->ResponseType                  = $this->ApiParams->getResponseType();
+        $ResponseObj->ResponseType                  = $this->SimpleAPI->Params->getResponseType();
         $ResponseObj->ResponseContentType           = $this->SimpleAPI->getResponseContentType();
         $ResponseObj->RequestContentType            = $this->SimpleAPI->getRequestContentType();
         $ResponseObj->CacheFile                     = $this->SimpleAPI->getCacheFile();
@@ -160,7 +157,7 @@ class SampleAPI {
 
         //This object will be transformed into the JSON or XML or ICS response, or whatever response type was requested
         //here you may define your own cases to handle each response type supported by your API
-        switch ( $this->ApiParams->getResponseType() ) {
+        switch ( $this->SimpleAPI->Params->getResponseType() ) {
             case ResponseType::JSON:
                 //if a JSON resource was requested, we transform our response to JSON
                 $response = json_encode( $ResponseObj );
@@ -209,9 +206,9 @@ class SampleAPI {
      */
     public function Init(){
         $this->SimpleAPI->Init();
-        $this->ApiParams->define( 'PARAM_ONE', ParamType::STRING );
-        $this->ApiParams->define( 'PARAM_TWO', ParamType::INTEGER );
-        $this->ApiParams->define( 'RESPONSETYPE', ParamType::RESPONSETYPE );
+        $this->SimpleAPI->Params->define( 'PARAM_ONE', ParamType::STRING );
+        $this->SimpleAPI->Params->define( 'PARAM_TWO', ParamType::INTEGER );
+        $this->SimpleAPI->Params->define( 'RESPONSETYPE', ParamType::RESPONSETYPE );
         $this->initParameterData();
 
         //we don't set the response content type header in the SimpleAPI->Init() itself
@@ -221,7 +218,7 @@ class SampleAPI {
         //if you need to intervene setting further ApiParams based on parameters, etc.,
         //you should do so HERE, since any cache files will be determined based on ApiParams
 
-        $responseContents = $this->SimpleAPI->getCacheFileIfAvailable( $this->ApiParams, self::API_VERSION );
+        $responseContents = $this->SimpleAPI->getCacheFileIfAvailable( $this->SimpleAPI->Params, self::API_VERSION );
         if( null === $responseContents ) {
             //This is where the main calculations of your API take place
             //For example you can populate the $this->responseData array with the API results
@@ -229,8 +226,8 @@ class SampleAPI {
             //Here is an example that populates the responseData array
             //with the string in ApiParams->PARAM_ONE for as many times
             //as indicated by ApiParams->PARAM_TWO 
-            for( $i = 0; $i < $this->ApiParams->PARAM_TWO; $i++ ) {
-                $this->responseData[] = $this->ApiParams->PARAM_ONE;
+            for( $i = 0; $i < $this->SimpleAPI->Params->PARAM_TWO; $i++ ) {
+                $this->responseData[] = $this->SimpleAPI->Params->PARAM_ONE;
             }
 
             //once your response is ready, we can do any last elaboration to the final output

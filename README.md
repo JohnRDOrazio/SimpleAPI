@@ -84,7 +84,6 @@ Here are a few simple steps to get you started in creating your own API:
    ```php
    <?php
    use JohnRDOrazio\SimpleAPI\SimpleAPI;
-   use JohnRDOrazio\SimpleAPI\ApiParams;
    use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
    use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
    use JohnRDOrazio\SimpleAPI\Enums\RequestContentType;
@@ -93,21 +92,19 @@ Here are a few simple steps to get you started in creating your own API:
    
    class MyApi {
        private SimpleAPI $SimpleAPI;
-       private ApiParams $ApiParams;
        public function __construct(){
            $this->SimpleAPI = new SimpleAPI();
-           $this->ApiParams = new ApiParams();
        }
        
        public function Init(){
            $this->SimpleAPI->Init();
            //define possible request parameters here
-           $this->ApiParams->define( 'PARAM_ONE', ParamType::STRING );
-           $this->ApiParams->define( 'PARAM_TWO', ParamType::INTEGER );
-           $this->ApiParams->define( 'RESPONSETYPE', ParamType::RESPONSETYPE );
+           $this->SimpleAPI->Params->define( 'PARAM_ONE', ParamType::STRING );
+           $this->SimpleAPI->Params->define( 'PARAM_TWO', ParamType::INTEGER );
+           $this->SimpleAPI->Params->define( 'RESPONSETYPE', ParamType::RESPONSETYPE );
            //TODO: move as much from SampleAPI->initParameterData() as possible to SimpleAPI
            $this->initParameterData(); //For now you have to create your own initParameterData() function...
-       }    
+       }
    }
    ```
    

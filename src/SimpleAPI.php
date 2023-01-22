@@ -6,6 +6,7 @@ use JohnRDOrazio\SimpleAPI\Enums\AcceptHeader;
 use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
 use JohnRDOrazio\SimpleAPI\Enums\CacheDuration;
 use JohnRDOrazio\SimpleAPI\Config;
+use JohnRDOrazio\SimpleAPI\ApiParams;
 
 class SimpleAPI {
 
@@ -24,6 +25,7 @@ class SimpleAPI {
     private ?string $CacheDuration                  = null;
     private ?string $CacheFile                      = null;
     private ?string $CacheFilePath                  = null;
+    public ApiParams $Params;
 
     public function __construct() {
         Config::LoadConfigs();
@@ -39,6 +41,7 @@ class SimpleAPI {
         if( isset( $_SERVER[ 'CONTENT_TYPE' ] ) ) {
             $this->RequestContentType = $_SERVER[ 'CONTENT_TYPE' ];
         }
+        $this->Params                           = new ApiParams();
     }
 
     private function setAllowedOriginHeader() {
