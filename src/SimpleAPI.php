@@ -10,7 +10,7 @@ use JohnRDOrazio\SimpleAPI\ApiParams;
 
 class SimpleAPI {
 
-    const VERSION                                   = '0.1.1';
+    const VERSION                                   = '0.1.2';
     private array $AllowedOrigins;
     private array $AllowedReferers;
     private array $AllowedAcceptHeaders;
