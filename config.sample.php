@@ -150,7 +150,7 @@ $cfg["ALLOWED_REFERERS"] = [ "*" ];
  * If you set this to true, and a request does not have the X-Requested-With header with a value of xmlhttprequest,
  *   the SimpleAPI will return a "418 I'm a teapot" header
  */
-$cfgDflt["FORCE_AJAX_REQUEST"] = false;
+$cfg["FORCE_AJAX_REQUEST"] = false;
 
 /**
  * ENFORCE_PARAMETER_CASE
@@ -160,7 +160,7 @@ $cfgDflt["FORCE_AJAX_REQUEST"] = false;
  *   should a request with 'param1' work? or a request with 'PARAM1' work?
  *   or should only 'Param1' work?
  */
-$cfgDflt["ENFORCE_PARAMETER_CASE"] = false;
+$cfg["ENFORCE_PARAMETER_CASE"] = false;
 
 /**
  * Github Repo of your final API
@@ -191,5 +191,5 @@ $cfg["CALENDAR_DEFAULT_LANGUAGE"] = "en-us";
 
 //STOP EDITING HERE! DO NOT TOUCH ANYTHING BELOW THIS LINE
 foreach( $cfg as $key => $value ) {
-    define( $key, $value );
+    define( 'JohnRDOrazio\\SimpleAPI\\' . $key, $value );
 }
