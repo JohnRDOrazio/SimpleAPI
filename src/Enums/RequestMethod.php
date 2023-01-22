@@ -22,7 +22,11 @@ class RequestMethod {
 
     public static array $values = [ "GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS", "HEAD", "CONNECT", "TRACE" ];
 
-    public static function isValid( $value ) {
+    public static function isValid( string $value ): bool {
         return in_array( $value, self::$values );
+    }
+
+    public static function areValid( array $values ): bool {
+        return empty( array_diff( $values, self::$values ) );
     }
 }

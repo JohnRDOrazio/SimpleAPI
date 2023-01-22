@@ -19,7 +19,11 @@ class RequestContentType {
         "multipart/form-data"
     ];
 
-    public static function isValid( $value ) {
+    public static function isValid( string $value ): bool {
         return in_array( $value, self::$values );
+    }
+
+    public static function areValid( array $values ): bool {
+        return empty( array_diff( $values, self::$values ) );
     }
 }

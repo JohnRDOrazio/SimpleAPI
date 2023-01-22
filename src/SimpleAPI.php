@@ -2,11 +2,14 @@
 
 namespace JohnRDOrazio\SimpleAPI;
 
+use ErrorException;
 use JohnRDOrazio\SimpleAPI\Enums\AcceptHeader;
+use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
 use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
 use JohnRDOrazio\SimpleAPI\Enums\CacheDuration;
 use JohnRDOrazio\SimpleAPI\Config;
 use JohnRDOrazio\SimpleAPI\ApiParams;
+use JohnRDOrazio\SimpleAPI\Enums\RequestContentType;
 
 class SimpleAPI {
 
@@ -32,9 +35,15 @@ class SimpleAPI {
         Config::LoadConfigs( static::$CONFIGURATION_FILE );
         $this->AllowedOrigins                   = ALLOWED_ORIGINS;
         $this->AllowedReferers                  = ALLOWED_REFERERS;
-        $this->AllowedAcceptHeaders             = ALLOWED_ACCEPT_HEADERS;
-        $this->AllowedRequestMethods            = ALLOWED_REQUEST_METHODS;
-        $this->AllowedRequestContentTypes       = ALLOWED_REQUEST_CONTENT_TYPES;
+        $this->AllowedAcceptHeaders             = AcceptHeader::areValid( ALLOWED_ACCEPT_HEADERS )
+                                                    ? ALLOWED_ACCEPT_HEADERS
+                                                    : throw new ErrorException("Please check your API configuration. The allowed accept headers you have defined do not seem to be valid: " . implode( ', ', ALLOWED_ACCEPT_HEADERS ) . ". Valid accept headers are: " . implode(', ', AcceptHeader::$values ));
+        $this->AllowedRequestMethods            = RequestMethod::areValid( ALLOWED_REQUEST_METHODS )
+                                                    ? ALLOWED_REQUEST_METHODS
+                                                    : throw new ErrorException("Please check your API configuration. The allowed request methods you have defined do not seem to be valid: " . implode( ', ', ALLOWED_REQUEST_METHODS ) . ". Valid request methods are: " . implode(', ', RequestMethod::$values ));
+        $this->AllowedRequestContentTypes       = RequestContentType::areValid( ALLOWED_REQUEST_CONTENT_TYPES )
+                                                    ? ALLOWED_REQUEST_CONTENT_TYPES
+                                                    : throw new ErrorException("Please check your API configuration. The allowed request content types you have defined do not seem to be valid: " . implode( ', ', ALLOWED_REQUEST_CONTENT_TYPES ) . ". Valid request content types are: " . implode(', ', RequestContentType::$values ));
         $this->AllowedResponseTypes             = array_map(fn($mimeType): string => ResponseType::fromMimeType($mimeType), ALLOWED_ACCEPT_HEADERS);
         $this->DefaultResponseContentType       = DEFAULT_MIME_TYPE;
         $this->RequestHeaders                   = getallheaders();
