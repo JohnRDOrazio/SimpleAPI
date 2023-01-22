@@ -83,21 +83,28 @@ Here are a few simple steps to get you started in creating your own API:
    Paste the contents of [SampleAPI.php](SampleAPI.php) into `MyApi.php` and adapt to your needs (changing the class name for starters),
    or simply write from scratch your own API implementation using the `SimpleAPI` package, defining your API parameters (if any):
    ```php
-   <?php
-   use JohnRDOrazio\SimpleAPI\SimpleAPI;
-   use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
-   use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
-   use JohnRDOrazio\SimpleAPI\Enums\RequestContentType;
+    <?php
+    use JohnRDOrazio\SimpleAPI\SimpleAPI;
+    use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
+    use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
+    use JohnRDOrazio\SimpleAPI\Enums\RequestContentType;
 
-   require __DIR__ . '/vendor/autoload.php';
+    require __DIR__ . '/vendor/autoload.php';
 
-   class MyApi {
-       private SimpleAPI $SimpleAPI;
-       public function __construct() {
-           $this->SimpleAPI = new SimpleAPI();
-       }
+    class MyApi {
+        private SimpleAPI $SimpleAPI;
+        public function __construct() {
 
-       public function Init() {
+            //Optionally set the path and name of your configuration file
+            //If you do not set the path and name of your configuration file,
+            //  SimpleAPI will look for a file named 'config.php' up to three levels from the current script
+            SimpleAPI::setConfigFile( 'endpointConfig.php' );
+
+            $this->SimpleAPI = new SimpleAPI();
+
+        }
+
+        public function Init() {
 
             //Initialize the SimpleAPI, which will take care of detecting request and setting response headers
             $this->SimpleAPI->Init();
@@ -108,8 +115,8 @@ Here are a few simple steps to get you started in creating your own API:
             $this->SimpleAPI->defineParameter( 'RESPONSETYPE', ParamType::RESPONSETYPE );
             //TODO: move as much from SampleAPI->initParameterData() as possible to SimpleAPI
             $this->initParameterData(); //For now you have to create your own initParameterData() function...
-       }
-   }
+        }
+    }
    ```
    
    Similarly paste the contents of [config.sample.php](config.sample.php) into `config.php` and adapt to your needs.

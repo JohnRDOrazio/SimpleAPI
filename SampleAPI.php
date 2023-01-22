@@ -44,7 +44,7 @@ class SampleAPI {
     private array $responseData                     = [];
 
     public function __construct() {
-        //If you prefer to define the name and path of your configuration file,
+        //If you wish to use a custom name and path for your configuration file,
         //  you must do so before instantiating the SimpleAPI
         //If you do not set the name and path of your configuration file,
         //  then SimpleAPI will search for a file named 'config.php' up to three levels from the current script
@@ -120,6 +120,7 @@ class SampleAPI {
         $ResponseObj->ResponseContentType           = $this->SimpleAPI->getResponseContentType();
         $ResponseObj->RequestContentType            = $this->SimpleAPI->getRequestContentType();
         $ResponseObj->CacheFile                     = $this->SimpleAPI->getCacheFile();
+        $ResponseObj->ConfigurationFile             = SimpleAPI::getConfigFile();
         $ResponseObj->SimpleAPICfgs = new stdClass();
         $ResponseObj->SimpleAPICfgs->AllowedAcceptHeaders           = $this->SimpleAPI->getAllowedAcceptHeaders();
         $ResponseObj->SimpleAPICfgs->AllowedResponseTypes           = $this->SimpleAPI->getAllowedResponseTypes();

@@ -365,6 +365,10 @@ class SimpleAPI {
         SimpleAPI::$CONFIGURATION_FILE = $configFile;
     }
 
+    public static function getConfigFile(): ?string {
+        return SimpleAPI::$CONFIGURATION_FILE;
+    }
+
     public function Init() {
         $this->setAllowedOriginHeader();
         $this->setAccessControlAllowMethods();
