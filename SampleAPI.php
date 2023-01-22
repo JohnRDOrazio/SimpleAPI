@@ -61,7 +61,7 @@ class SampleAPI {
                 header( $_SERVER[ "SERVER_PROTOCOL" ]." 400 Bad Request", true, 400 );
                 die( '{"error":"Malformed JSON data received in the request: <' . $json . '>, ' . json_last_error_msg() . '"}' );
             } else {
-                $this->ApiParams = new ApiParams( $data );
+                $this->ApiParams->setValues( $data );
             }
         } else {
             switch( $this->SimpleAPI->getRequestMethod() ) {
@@ -131,6 +131,7 @@ class SampleAPI {
         $ResponseObj->SimpleAPICfgs->RelaxForTextTypeRequests       = $this->SimpleAPI->getRelaxForTextTypeRequests();
         $ResponseObj->SimpleAPICfgs->EnforceAjaxRequests            = $this->SimpleAPI->getForceAjaxRequest();
         $ResponseObj->SimpleAPICurrentVersion                       = SimpleAPI::VERSION; 
+        $ResponseObj->SimpleAPICfgs->ENFORCE_PARAMETER_CASE         = JohnRDOrazio\SimpleAPI\ENFORCE_PARAMETER_CASE;
 
         $GithubReleasesAPI = "https://api.github.com/repos/JohnRDOrazio/SimpleAPI/releases/latest";
         $ch = curl_init();
