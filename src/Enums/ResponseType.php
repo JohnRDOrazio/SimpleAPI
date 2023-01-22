@@ -94,14 +94,14 @@ class ResponseType {
     public static function isValid( $value ) : bool {
         return in_array( $value, self::$values );
     }
-    
+
     public static function fromMimeType( string $mimeType ) : string|false {
         if( array_key_exists( $mimeType, self::$values ) ) {
             return self::$values[ $mimeType ];
         }
         return false;
     }
-    
+
     public static function toFileExt( string $responseType ) : string|false {
         if( array_key_exists( $responseType, self::$fileExt ) ) {
             return self::$fileExt[ $responseType ];

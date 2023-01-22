@@ -153,6 +153,16 @@ $cfg["ALLOWED_REFERERS"] = [ "*" ];
 $cfgDflt["FORCE_AJAX_REQUEST"] = false;
 
 /**
+ * ENFORCE_PARAMETER_CASE
+ * Whether you want to enforce strict equality of parameter casing
+ * (i.e. must match upper or lower or mixed case exactly as you defined each parameter)
+ * For example, you define a parameter as Param1:
+ *   should a request with 'param1' work? or a request with 'PARAM1' work?
+ *   or should only 'Param1' work?
+ */
+$cfgDflt["ENFORCE_PARAMETER_CASE"] = false;
+
+/**
  * Github Repo of your final API
  * You may not even need this
  * It can come in handy for things like outputting ICS calendar type data,

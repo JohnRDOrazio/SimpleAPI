@@ -302,7 +302,7 @@ class SimpleAPI {
     private function determineCacheFile( APIParams $apiParams, string $apiVersion = "" ) : ?string {
         $this->CacheFilePath = CACHE_FOLDER_NAME . "/v" . str_replace( ".", "_", $apiVersion );
         if( $this->CacheDuration !== null ) {
-            $cacheFileExtension = $apiParams->ResponseType !== null ? ResponseType::toFileExt( $apiParams->ResponseType ) : AcceptHeader::toFileExt( $this->DefaultResponseContentType );
+            $cacheFileExtension = $apiParams->getResponseType() !== null ? ResponseType::toFileExt( $apiParams->getResponseType() ) : AcceptHeader::toFileExt( $this->DefaultResponseContentType );
             $cacheFileName = md5( serialize( $apiParams) ) . $this->CacheDuration . "." . $cacheFileExtension;
             return $this->CacheFilePath . "/" . $cacheFileName;
         }

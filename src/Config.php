@@ -31,6 +31,7 @@ class Config {
         "ALLOWED_ORIGINS"               => [ "*" ],
         "ALLOWED_REFERERS"              => [ "*" ],
         "FORCE_AJAX_REQUEST"            => false,
+        "ENFORCE_PARAMETER_CASE"        => false,
         "GITHUB_REPO_USER"              => "JohnRDOrazio",
         "GITHUB_REPO_NAME"              => "SimpleAPI",
         "XML_PARENT_ELEMENT"            => "SampleAPI",

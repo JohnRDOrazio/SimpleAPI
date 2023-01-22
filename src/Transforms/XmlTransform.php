@@ -4,7 +4,7 @@ namespace JohnRDOrazio\SimpleAPI\Transforms;
 
 class XmlTransform {
 
-    public static function Array2XML(array $data, ?SimpleXMLElement &$xml) : void {
+    public static function Array2XML(array $data, ?\SimpleXMLElement &$xml) : void {
         foreach( $data as $key => $value ) {
             // if the key is a number, it needs text with it to actually work
             if( is_numeric( $key ) ) {
@@ -27,7 +27,7 @@ class XmlTransform {
         $jsonStr = json_encode( $object );
         $jsonObj = json_decode( $jsonStr, true );
         //Now we can transform the array to XML
-        $xml = new SimpleXMLElement ( "<?xml version=\"1.0\" encoding=\"UTF-8\"?" . "><{$XMLParentElement} xmlns=\"{$XMLNamespace}\"/>" );
+        $xml = new \SimpleXMLElement ( "<?xml version=\"1.0\" encoding=\"UTF-8\"?" . "><{$XMLParentElement} xmlns=\"{$XMLNamespace}\"/>" );
         XmlTransform::Array2XML( $jsonObj, $xml );
         return $xml->asXML();
     }
