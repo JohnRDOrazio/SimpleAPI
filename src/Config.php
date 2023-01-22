@@ -3,8 +3,9 @@
 namespace JohnRDOrazio\SimpleAPI;
 
 /**
- * Search for the user's config file both in the same level
- * and one level up
+ * Configure the SimpleAPI
+ * Searches for the user defined config file
+ *   or for 'config.php' up to three levels from the current script context
  */
 
 class Config {
@@ -41,13 +42,7 @@ class Config {
         "CALENDAR_NAME"                 => "SimpleAPI Calendar"
     ];
 
-    /**
-     * Function LoadUserConfiguration
-     * Called by LoadConfigs function
-     * Searches for the user's configuration file up to three levels
-     */
-
-    private static function LoadUserConfiguration() {
+    public static function TryDetectConfigurationFile(): void {
         if( file_exists( 'config.php' ) ) {
             require_once( "config.php" );
         }
@@ -62,7 +57,7 @@ class Config {
             &&
             ( !file_exists( 'config.php' ) && !file_exists( '../config.php' ) && !file_exists( '../../config.php' ) )
           ) {
-            header( "Content-Type: text/html; charset=utf-8" );
+            header( "Content-Type: text/html; charset=utf-8", true );
             $html = '<h3>Welcome to SimpleAPI!</h3>';
             $html .= '<p>You should really set your <b><i>config.php</i></b> before trying to use SimpleAPI!</p>';
             $html .= '<p>You may use the included <b><i>config.sample.php</i></b> to start with.</p>';
@@ -75,9 +70,12 @@ class Config {
      * Makes sure that every constant needed gets set,
      * even if not set in the user's config file
      */
-    public static function LoadConfigs() {
-
-        Config::LoadUserConfiguration();
+    public static function LoadConfigs( ?string $configFile = null ) {
+        if( $configFile === null ) {
+            Config::TryDetectConfigurationFile();
+        } else {
+            require_once( $configFile );
+        }
 
         foreach( Config::DEFAULTS as $key => $value ) {
             if(!defined( __NAMESPACE__ . '\\' . $key) ) {

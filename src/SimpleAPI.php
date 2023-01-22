@@ -11,6 +11,7 @@ use JohnRDOrazio\SimpleAPI\ApiParams;
 class SimpleAPI {
 
     const VERSION                                   = '0.1.2';
+    private static ?string $CONFIGURATION_FILE = null;
     private array $AllowedOrigins;
     private array $AllowedReferers;
     private array $AllowedAcceptHeaders;
@@ -28,7 +29,7 @@ class SimpleAPI {
     private ApiParams $Params;
 
     public function __construct() {
-        Config::LoadConfigs();
+        Config::LoadConfigs( static::$CONFIGURATION_FILE );
         $this->AllowedOrigins                   = ALLOWED_ORIGINS;
         $this->AllowedReferers                  = ALLOWED_REFERERS;
         $this->AllowedAcceptHeaders             = ALLOWED_ACCEPT_HEADERS;
@@ -358,6 +359,10 @@ class SimpleAPI {
 
     public function getAllParameters(): array {
         return $this->Params->getAll();
+    }
+
+    public static function setConfigFile( string $configFile ): void {
+        SimpleAPI::$CONFIGURATION_FILE = $configFile;
     }
 
     public function Init() {

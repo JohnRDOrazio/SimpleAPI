@@ -43,11 +43,16 @@ class SampleAPI {
 
     private array $responseData                     = [];
 
-    public function __construct(){
+    public function __construct() {
+        //If you prefer to define the name and path of your configuration file,
+        //  you must do so before instantiating the SimpleAPI
+        //If you do not set the name and path of your configuration file,
+        //  then SimpleAPI will search for a file named 'config.php' up to three levels from the current script
+        SimpleAPI::setConfigFile( 'endpointConfig.php' );
         $this->SimpleAPI                            = new SimpleAPI();
     }
 
-    private function initParameterData() {
+    private function initParameterData(): void {
         if ( $this->SimpleAPI->getRequestContentType() === RequestContentType::JSON ) {
             $json = file_get_contents( 'php://input' );
             $data = json_decode( $json, true );
@@ -88,7 +93,7 @@ class SampleAPI {
     }
 
 
-    private function generateResponse() : string {
+    private function generateResponse() : string|bool {
         $response               = '';
         $ResponseObj            = new stdClass();
 
@@ -204,7 +209,7 @@ class SampleAPI {
     /**
      * Your SampleAPI will only work once you call the public Init() method
      */
-    public function Init(){
+    public function Init() {
 
         //Initialize the SimpleAPI, which will take care of detecting request and setting response headers
         $this->SimpleAPI->Init();
