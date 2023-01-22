@@ -96,19 +96,23 @@ Here are a few simple steps to get you started in creating your own API:
        private ApiParams $ApiParams;
        public function __construct(){
            $this->SimpleAPI = new SimpleAPI();
+           $this->ApiParams = new ApiParams();
        }
        
        public function Init(){
            $this->SimpleAPI->Init();
+           //define possible request parameters here
+           $this->ApiParams->define( 'PARAM_ONE', ParamType::STRING );
+           $this->ApiParams->define( 'PARAM_TWO', ParamType::INTEGER );
+           $this->ApiParams->define( 'RESPONSETYPE', ParamType::RESPONSETYPE );
+           //TODO: move as much from SampleAPI->initParameterData() as possible to SimpleAPI
+           $this->initParameterData(); //For now you have to create your own initParameterData() function...
        }    
    }
    ```
    
    Similarly paste the contents of [config.sample.php](config.sample.php) into `config.php` and adapt to your needs.
-   
-   Define your API parameters, if any
-   > *TODO: A few sample parameters are currently hardcoded into the `SimpleAPI` in `src/ApiParams.php`, needs to be extendible (see [issue #8](https://github.com/JohnRDOrazio/SimpleAPI/issues/8))
-   
+      
 3) Create your endpoint:
    
    *on a Linux system*
