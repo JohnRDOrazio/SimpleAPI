@@ -37,13 +37,13 @@ class SimpleAPI {
         $this->AllowedReferers                  = ALLOWED_REFERERS;
         $this->AllowedAcceptHeaders             = AcceptHeader::areValid( ALLOWED_ACCEPT_HEADERS )
                                                     ? ALLOWED_ACCEPT_HEADERS
-                                                    : throw new ErrorException("Please check your API configuration. The allowed accept headers you have defined do not seem to be valid: " . implode( ', ', ALLOWED_ACCEPT_HEADERS ) . ". Valid accept headers are: " . implode(', ', AcceptHeader::$values ));
+                                                    : die("Please check your API configuration. The allowed accept headers you have defined do not seem to be valid: " . implode( ', ', ALLOWED_ACCEPT_HEADERS ) . ". Valid accept headers are: " . implode(', ', AcceptHeader::$values ));
         $this->AllowedRequestMethods            = RequestMethod::areValid( ALLOWED_REQUEST_METHODS )
                                                     ? ALLOWED_REQUEST_METHODS
-                                                    : throw new ErrorException("Please check your API configuration. The allowed request methods you have defined do not seem to be valid: " . implode( ', ', ALLOWED_REQUEST_METHODS ) . ". Valid request methods are: " . implode(', ', RequestMethod::$values ));
+                                                    : die("Please check your API configuration. The allowed request methods you have defined do not seem to be valid: " . implode( ', ', ALLOWED_REQUEST_METHODS ) . ". Valid request methods are: " . implode(', ', RequestMethod::$values ));
         $this->AllowedRequestContentTypes       = RequestContentType::areValid( ALLOWED_REQUEST_CONTENT_TYPES )
                                                     ? ALLOWED_REQUEST_CONTENT_TYPES
-                                                    : throw new ErrorException("Please check your API configuration. The allowed request content types you have defined do not seem to be valid: " . implode( ', ', ALLOWED_REQUEST_CONTENT_TYPES ) . ". Valid request content types are: " . implode(', ', RequestContentType::$values ));
+                                                    : die("Please check your API configuration. The allowed request content types you have defined do not seem to be valid: " . implode( ', ', ALLOWED_REQUEST_CONTENT_TYPES ) . ". Valid request content types are: " . implode(', ', RequestContentType::$values ));
         $this->AllowedResponseTypes             = array_map(fn($mimeType): string => ResponseType::fromMimeType($mimeType), ALLOWED_ACCEPT_HEADERS);
         $this->DefaultResponseContentType       = DEFAULT_MIME_TYPE;
         $this->RequestHeaders                   = getallheaders();
