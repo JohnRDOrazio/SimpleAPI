@@ -35,15 +35,33 @@ class SimpleAPI {
         Config::LoadConfigs( static::$CONFIGURATION_FILE );
         $this->AllowedOrigins                   = ALLOWED_ORIGINS;
         $this->AllowedReferers                  = ALLOWED_REFERERS;
-        $this->AllowedAcceptHeaders             = AcceptHeader::areValid( ALLOWED_ACCEPT_HEADERS )
-                                                    ? ALLOWED_ACCEPT_HEADERS
-                                                    : die("Please check your API configuration. The allowed accept headers you have defined do not seem to be valid: " . implode( ', ', ALLOWED_ACCEPT_HEADERS ) . ". Valid accept headers are: " . implode(', ', AcceptHeader::$values ));
-        $this->AllowedRequestMethods            = RequestMethod::areValid( ALLOWED_REQUEST_METHODS )
-                                                    ? ALLOWED_REQUEST_METHODS
-                                                    : die("Please check your API configuration. The allowed request methods you have defined do not seem to be valid: " . implode( ', ', ALLOWED_REQUEST_METHODS ) . ". Valid request methods are: " . implode(', ', RequestMethod::$values ));
-        $this->AllowedRequestContentTypes       = RequestContentType::areValid( ALLOWED_REQUEST_CONTENT_TYPES )
-                                                    ? ALLOWED_REQUEST_CONTENT_TYPES
-                                                    : die("Please check your API configuration. The allowed request content types you have defined do not seem to be valid: " . implode( ', ', ALLOWED_REQUEST_CONTENT_TYPES ) . ". Valid request content types are: " . implode(', ', RequestContentType::$values ));
+        if( AcceptHeader::areValid( ALLOWED_ACCEPT_HEADERS ) ) {
+            $this->AllowedAcceptHeaders = ALLOWED_ACCEPT_HEADERS;
+        } else {
+            $message = "Please check your API configuration. The allowed accept headers you have defined do not seem to be valid: ";
+            $message .= implode( ', ', ALLOWED_ACCEPT_HEADERS );
+            $message .= ". Valid accept headers are: ";
+            $message .= implode(', ', AcceptHeader::$values );
+            die( $message );
+        }
+        if( RequestMethod::areValid( ALLOWED_REQUEST_METHODS ) ) {
+            $this->AllowedRequestMethods = ALLOWED_REQUEST_METHODS;
+        } else {
+            $message = "Please check your API configuration. The allowed request methods you have defined do not seem to be valid: ";
+            $message .= implode( ', ', ALLOWED_REQUEST_METHODS );
+            $message .= ". Valid request methods are: ";
+            $message .= implode(', ', RequestMethod::$values );
+            die( $message );
+        }
+        if( RequestContentType::areValid( ALLOWED_REQUEST_CONTENT_TYPES ) ) {
+            $this->AllowedRequestContentTypes = ALLOWED_REQUEST_CONTENT_TYPES;
+        } else {
+            $message = "Please check your API configuration. The allowed request content types you have defined do not seem to be valid: ";
+            $message .= implode( ', ', ALLOWED_REQUEST_CONTENT_TYPES );
+            $message .= ". Valid request content types are: ";
+            $message .= implode(', ', RequestContentType::$values );
+            die( $message );
+        }
         $this->AllowedResponseTypes             = array_map(fn($mimeType): string => ResponseType::fromMimeType($mimeType), ALLOWED_ACCEPT_HEADERS);
         $this->DefaultResponseContentType       = DEFAULT_MIME_TYPE;
         $this->RequestHeaders                   = getallheaders();
