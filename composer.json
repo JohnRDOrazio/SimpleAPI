@@ -27,5 +27,13 @@
             "type": "path",
             "url": "src"
         }
-    ]
+    ],
+    "scripts": {
+        "reminder-message": [
+            "echo \"Remember to set the configuration for each endpoint you create based on the included config.sample.php\""
+        ],
+        "post-install-cmd": [
+            "@reminder-message"
+        ]
+    }
 }
