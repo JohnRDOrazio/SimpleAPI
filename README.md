@@ -87,23 +87,26 @@ Here are a few simple steps to get you started in creating your own API:
    use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
    use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
    use JohnRDOrazio\SimpleAPI\Enums\RequestContentType;
-   
+
    require __DIR__ . '/vendor/autoload.php';
-   
+
    class MyApi {
        private SimpleAPI $SimpleAPI;
-       public function __construct(){
+       public function __construct() {
            $this->SimpleAPI = new SimpleAPI();
        }
-       
-       public function Init(){
-           $this->SimpleAPI->Init();
-           //define possible request parameters here
-           $this->SimpleAPI->Params->define( 'PARAM_ONE', ParamType::STRING );
-           $this->SimpleAPI->Params->define( 'PARAM_TWO', ParamType::INTEGER );
-           $this->SimpleAPI->Params->define( 'RESPONSETYPE', ParamType::RESPONSETYPE );
-           //TODO: move as much from SampleAPI->initParameterData() as possible to SimpleAPI
-           $this->initParameterData(); //For now you have to create your own initParameterData() function...
+
+       public function Init() {
+
+            //Initialize the SimpleAPI, which will take care of detecting request and setting response headers
+            $this->SimpleAPI->Init();
+
+            //define your API's accepted parameters and expected type (defining parameters is optional: you might not have any parameters...)
+            $this->SimpleAPI->defineParameter( 'PARAM_ONE', ParamType::STRING );
+            $this->SimpleAPI->defineParameter( 'PARAM_TWO', ParamType::INTEGER );
+            $this->SimpleAPI->defineParameter( 'RESPONSETYPE', ParamType::RESPONSETYPE );
+            //TODO: move as much from SampleAPI->initParameterData() as possible to SimpleAPI
+            $this->initParameterData(); //For now you have to create your own initParameterData() function...
        }
    }
    ```

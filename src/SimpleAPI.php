@@ -25,7 +25,7 @@ class SimpleAPI {
     private ?string $CacheDuration                  = null;
     private ?string $CacheFile                      = null;
     private ?string $CacheFilePath                  = null;
-    public ApiParams $Params;
+    private ApiParams $Params;
 
     public function __construct() {
         Config::LoadConfigs();
@@ -302,11 +302,11 @@ class SimpleAPI {
         }
     }
 
-    private function determineCacheFile( APIParams $apiParams, string $apiVersion = "" ) : ?string {
+    private function determineCacheFile( string $apiVersion = "" ) : ?string {
         $this->CacheFilePath = CACHE_FOLDER_NAME . "/v" . str_replace( ".", "_", $apiVersion );
         if( $this->CacheDuration !== null ) {
-            $cacheFileExtension = $apiParams->getResponseType() !== null ? ResponseType::toFileExt( $apiParams->getResponseType() ) : AcceptHeader::toFileExt( $this->DefaultResponseContentType );
-            $cacheFileName = md5( serialize( $apiParams) ) . $this->CacheDuration . "." . $cacheFileExtension;
+            $cacheFileExtension = $this->Params->getResponseType() !== null ? ResponseType::toFileExt( $this->Params->getResponseType() ) : AcceptHeader::toFileExt( $this->DefaultResponseContentType );
+            $cacheFileName = md5( serialize( $this->Params ) ) . $this->CacheDuration . "." . $cacheFileExtension;
             return $this->CacheFilePath . "/" . $cacheFileName;
         }
         return null;
@@ -327,12 +327,36 @@ class SimpleAPI {
     /**
      * Function getCacheFileIsAvailable
     */
-    public function getCacheFileIfAvailable( APIParams $apiParams, string $apiVersion = "" ) : ?string {
-        $this->CacheFile = $this->determineCacheFile( $apiParams, $apiVersion );
+    public function getCacheFileIfAvailable( string $apiVersion = "" ) : ?string {
+        $this->CacheFile = $this->determineCacheFile( $apiVersion );
         if( $this->CacheFile !== null && file_exists( $this->CacheFile ) ) {
             return file_get_contents( $this->CacheFile );
         }
         return null;
+    }
+
+    public function defineParameter( string $param, mixed $type ) {
+        $this->Params->define( $param, $type );
+    }
+
+    public function getParameterValue( string $param ): mixed {
+        return $this->Params->{ $param };
+    }
+
+    public function setParameterValues( array $DATA ) {
+        $this->Params->setValues( $DATA );
+    }
+
+    public function getResponseTypeParameterValue(): ?string {
+        return $this->Params->getResponseType();
+    }
+
+    public function setResponseTypeParameterValue( string $value ): void {
+        $this->Params->setResponseType( $value );
+    }
+
+    public function getAllParameters(): array {
+        return $this->Params->getAll();
     }
 
     public function Init() {
