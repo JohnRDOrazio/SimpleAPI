@@ -24,6 +24,7 @@ The **SimpleAPI** simply handles detection of `Request` methods and `Accept` hea
 and takes care of preparing the `Response` accordingly, with the correct `Response` headers and `Content type`.
 
 It will assist you in defining the accepted parameters that the `Request` can or should include,
+in sanitizing the values of `Request` parameters based on the type you have defined for each parameter,
 and in generating the correct `Response` based on those parameters.
 It will generate `Response` headers for both valid and invalid requests,
 so as to assist the requesting party in making the correct `Request` to your API.
