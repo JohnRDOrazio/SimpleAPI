@@ -29,7 +29,10 @@ class ApiParams {
                 $param = strtolower( $param );
             }
             if( array_key_exists( $param, $this->params ) ) {
-                $this->sanitizeAndSetValue( $param, $value );
+                $this->params[ $param ]->setValue( $value );
+                if( $this->params[ $param ] instanceof ResponseTypeParameter ) {
+                    $this->responseType = $this->params[ $param ]->getValue();
+                }
             } else {
                 header( $_SERVER[ "SERVER_PROTOCOL" ] . " 400 Bad Request", true, 400 );
                 header('Content-Type: text/html', true);
@@ -78,39 +81,38 @@ class ApiParams {
         if( ParamType::isValid( $type ) ) {
             switch ( $type ) {
                 case ParamType::STRING:
-                    $this->params[$param] = new StringParameter();
+                    $this->params[$param] = new StringParameter( $param );
                 break;
                 case ParamType::INTEGER:
-                    $this->params[$param] = new IntegerParameter();
+                    $this->params[$param] = new IntegerParameter( $param );
                 break;
                 case ParamType::FLOAT:
-                    $this->params[$param] = new FloatParameter();
+                    $this->params[$param] = new FloatParameter( $param );
                 break;
                 case ParamType::BOOLEAN:
-                    $this->params[$param] = new BooleanParameter();
+                    $this->params[$param] = new BooleanParameter( $param );
                 break;
                 case ParamType::ARRAY:
-                    $this->params[$param] = new ArrayParameter();
+                    $this->params[$param] = new ArrayParameter( $param );
                 break;
                 case ParamType::OBJECT:
-                    $this->params[$param] = new ObjectParameter();
+                    $this->params[$param] = new ObjectParameter( $param );
                 break;
                 case ParamType::NULL:
-                    $this->params[$param] = new NullParameter();
+                    $this->params[$param] = new NullParameter( $param );
                 break;
                 case ParamType::MIXED:
-                    $this->params[$param] = new MixedParameter();
+                    $this->params[$param] = new MixedParameter( $param );
                 break;
                 //from PHP 8.1 we will be able to use true and false types on their own
                 // case ParamType::TRUE:
-                //     $this->params[$param] = new TrueParameter();
+                //     $this->params[$param] = new TrueParameter( $param );
                 // break;
                 // case ParamType::FALSE:
-                //     $this->params[$param] = new FalseParameter();
+                //     $this->params[$param] = new FalseParameter( $param );
                 // break;
                 case ParamType::RESPONSETYPE:
-                    $this->params[$param] = new ResponseTypeParameter();
-                    $this->params[$param]->setValue( null );
+                    $this->params[$param] = new ResponseTypeParameter( $param );
                 break;
             }
         } else {
@@ -123,95 +125,6 @@ class ApiParams {
             $param = strtolower( $param );
         }
         return $this->params[$param]->getValue();
-    }
-
-    private function sanitizeAndSetValue( string $param, mixed $value ) : void {
-        if( $this->params[ $param ] instanceof ArrayParameter ) {
-            if( gettype($value) !== 'array' ) {
-                header( $_SERVER[ "SERVER_PROTOCOL" ] . " 400 Bad Request", true, 400 );
-                die( "Cannot fulfill this request, parameter {$param} should be of type array, but it's value in the request was not of type array" );
-            }
-            $this->params[ $param ]->setValue( $value );
-        }
-        else if( $this->params[ $param ] instanceof BooleanParameter ) {
-            if( gettype($value) !== 'boolean' ) {
-                $value = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
-            }
-            $this->params[ $param ]->setValue( $value );
-        }
-        else if( $this->params[ $param ] instanceof FloatParameter ) {
-            if( gettype($value) !== 'double' ) {
-                $value = filter_var( $value, FILTER_VALIDATE_FLOAT );
-            }
-            $this->params[ $param ]->setValue( $value );
-        }
-        else if( $this->params[ $param ] instanceof IntegerParameter ) {
-            if( gettype($value) !== 'integer' ) {
-                $value = filter_var( $value, FILTER_VALIDATE_INT );
-            }
-            $this->params[ $param ]->setValue( $value );
-        }
-        else if( $this->params[ $param ] instanceof MixedParameter ) {
-            if( gettype($value) === 'string' ) {
-                $value = strip_tags( $value );
-            }
-            $this->params[ $param ]->setValue( $value );
-        }
-        else if( $this->params[ $param ] instanceof NullParameter ) {
-            if( gettype($value) !== 'NULL' ) {
-                if( strtolower( $value ) === 'null' ) {
-                    $value = null;
-                } else {
-                    header( $_SERVER[ "SERVER_PROTOCOL" ] . " 400 Bad Request", true, 400 );
-                    die( "Cannot fulfill this request, parameter {$param} should be of type null, but it's value in the request was not of type null" );
-                }
-            }
-            $this->params[ $param ]->setValue( $value );
-        }
-        else if( $this->params[ $param ] instanceof ObjectParameter ) {
-            if( gettype($value) !== 'object' ) {
-                header( $_SERVER[ "SERVER_PROTOCOL" ] . " 400 Bad Request", true, 400 );
-                die( "Cannot fulfill this request, parameter {$param} should be of type object, but it's value in the request was not of type object" );
-            }
-            $this->params[ $param ]->setValue( $value );
-        }
-        else if( $this->params[ $param ] instanceof ResponseTypeParameter ) {
-            $this->params[ $param ]->setValue( ResponseType::isValid( strtoupper( $value ) ) ? strtoupper( $value ) : null );
-            $this->responseType = $this->params[ $param ]->getValue();
-        }
-        else if( $this->params[ $param ] instanceof StringParameter ) {
-            if( gettype($value) !== 'string' ) {
-                $value = (string) $value;
-            }
-            $value = strip_tags( $value );
-            $this->params[ $param ]->setValue( $value );
-        }
-        /*
-        else if( $this->params[ $param ] instanceof FalseParameter ) {
-            if( gettype($value) !== 'boolean' ) {
-                $value = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
-            }
-            if( $value === false ) {
-                $this->params[ $param ]->setValue( $value );
-            } else {
-                header( $_SERVER[ "SERVER_PROTOCOL" ] . " 400 Bad Request", true, 400 );
-                die( "Cannot fulfill this request, parameter {$param} is of type false, but it's value in the request was not of type false" );
-            }
-        }
-        */
-        /*
-        else if( $this->params[ $param ] instanceof TrueParameter ) {
-            if( gettype($value) !== 'boolean' ) {
-                $value = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
-            }
-            if( $value === true ) {
-                $this->params[ $param ]->setValue( $value );
-            } else {
-                header( $_SERVER[ "SERVER_PROTOCOL" ] . " 400 Bad Request", true, 400 );
-                die( "Cannot fulfill this request, parameter {$param} is of type true, but it's value in the request was not of type true" );
-            }
-        }
-        */
     }
 
     public function setResponseType( string $value ) : void {
