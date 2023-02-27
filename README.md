@@ -85,6 +85,7 @@ Here are a few simple steps to get you started in creating your own API:
    ```php
     <?php
     use JohnRDOrazio\SimpleAPI\SimpleAPI;
+    use JohnRDOrazio\SimpleAPI\Enums\ParamType;
     use JohnRDOrazio\SimpleAPI\Enums\ResponseType;
     use JohnRDOrazio\SimpleAPI\Enums\RequestMethod;
     use JohnRDOrazio\SimpleAPI\Enums\RequestContentType;
