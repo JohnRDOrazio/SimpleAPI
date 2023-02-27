@@ -51,6 +51,8 @@ $cfg["ALLOWED_REQUEST_CONTENT_TYPES"] = [
  * Set here the MIME types that the API will support, and that clients will be able to request
  * For any request that includes a non supported Accept header,
  * the SimpleAPI will return a "406 Not Acceptable" http status header
+ * Even if the response type is set via a parameter, this array will still define
+ *  the supported response types
  */
 $cfg["ALLOWED_ACCEPT_HEADERS"] = [
     // "application/octet-stream",
@@ -93,7 +95,6 @@ $cfg["DEFAULT_MIME_TYPE"] = "application/json";
  * Setting this option to true will allow such requests to be made, while the Response will still have the default Content type
  */
 $cfg["RELAX_FOR_TEXT_TYPE_REQUESTS"] = true;
-
 
 /**
  * CACHE_DURATION
