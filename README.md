@@ -107,15 +107,13 @@ Here are a few simple steps to get you started in creating your own API:
 
         public function Init() {
 
-            //Initialize the SimpleAPI, which will take care of detecting request and setting response headers
-            $this->SimpleAPI->Init();
-
-            //define your API's accepted parameters and expected type (defining parameters is optional: you might not have any parameters...)
+            //first define your API's accepted parameters with relative expected types (defining parameters is optional: you might not have any parameters...)
             $this->SimpleAPI->defineParameter( 'PARAM_ONE', ParamType::STRING );
             $this->SimpleAPI->defineParameter( 'PARAM_TWO', ParamType::INTEGER );
             $this->SimpleAPI->defineParameter( 'RESPONSETYPE', ParamType::RESPONSETYPE );
-            //TODO: move as much from SampleAPI->initParameterData() as possible to SimpleAPI
-            $this->initParameterData(); //For now you have to create your own initParameterData() function...
+
+            //Initialize the SimpleAPI, which will take care of detecting request and setting response headers
+            $this->SimpleAPI->Init();
         }
     }
    ```
